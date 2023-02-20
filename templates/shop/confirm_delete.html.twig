@@ -1,0 +1,28 @@
+{% extends 'base2.html.twig' %}
+{% block body %}
+    <form method="post" action="{{ path('delete', {'id': Shop.id}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ Shop.id) }}">
+        <h1>Are you sure you want to delete " {{ Shop.name }} "</h1>
+        {% if Shop.Product %}
+            <h3>The following products are using this Shop type and they will be deleted </h3>
+            <table class="table" border = "3" >
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    
+
+                </tr>
+                {% for Product in Shop.Product %}
+                    <tr>
+                        <td>{{ Product.id }}</td>
+                        <td>{{ Product.name }}</td>
+                        
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        <button type="submit" class="btn btn-danger">Yes</button>
+    </form>
+    <a class="btn btn-primary" href="{{ path('afficheBd') }}">No</a>
+{% endblock %}
