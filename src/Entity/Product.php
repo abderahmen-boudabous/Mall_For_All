@@ -109,7 +109,7 @@ class Product
     {
         return $this->shop;
     }
-
+ 
     public function setShop(?shop $shop): self
     {
         $this->shop = $shop;

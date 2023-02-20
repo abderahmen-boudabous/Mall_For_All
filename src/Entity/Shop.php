@@ -130,6 +130,7 @@ class Shop
 
         return $this;
     }
+      
 
     public function removeProduct(Product $product): self
     {
