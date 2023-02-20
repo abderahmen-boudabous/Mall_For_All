@@ -26,8 +26,7 @@ class Shop
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Description cannot be empty")]
-    #[Assert\Length(min: 10)]
-    #[Assert\Type('alpha',message:"Description must contain letters only")]
+    #[Assert\Length(min: 5)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
