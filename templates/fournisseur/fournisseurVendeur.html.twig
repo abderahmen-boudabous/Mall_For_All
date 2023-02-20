@@ -1,0 +1,44 @@
+{% extends 'base1.html.twig' %}
+{% block menu%}
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="index.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Mall For All</h3>
+            </a>
+
+            <div class="navbar-nav w-100">
+                <a href="{{path('app_home')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i> Seller Dashboard </a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Shops</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-bag me-2"></i>Products</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Commandes</a>
+                <a href="{{path('afficheFV')}}" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Suppliers</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-calendar me-2"></i>Events</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-file-alt me-2"></i>Reclamations</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+{% endblock %}
+{% block table%}
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">List of suppliers</h6>
+            </div>
+            <div class="row">
+            {% for i in fournisseurs %}
+            <div class="card" style="width: 25%">
+                <img class="" src="{{ asset('uploads/fournisseur/'~i.img) }}" alt="" width="100%">
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{i.nom  }}</h5>
+                    <h5 class="card-title">Category: {{i.categorie.libelle  }}</h5>
+                    <a class="btn btn-sm btn-primary" href="{{ path('detailFV', { 'id': i.id  }) }}">Details</a>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

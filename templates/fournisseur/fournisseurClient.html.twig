@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block content%}
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded p-4">
+            <div class=" text-center mb-4">
+                <h2 class=" text-dark">Our suppliers</h2>
+            </div>
+            <div class="row">
+                {% for i in fournisseurs %}
+                    <div class="card" style="width: 25%">
+                        <img class="" src="{{ asset('uploads/fournisseur/'~i.img) }}" alt="" width="100%">
+                        <div class="card-body">
+                            <h5 class="card-title">Name: {{i.nom  }}</h5>
+                            <h5 class="card-title">Category: {{i.categorie.libelle  }}</h5>
+                             </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base1.html.twig' %}
+{% block table%}
+    <div class="container-fluid pt-4 px-4 ">
+        <div class="bg-light text-center rounded p-4 ">
+            <div class=" text-center justify-content-between mb-4 ">
+                <h3 class="mb-0 text-primary ">Supplier's Details</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-center align-middle table-bordered table-hover mb-0">
+
+                    <tr >
+                        <th  class="text-dark"> id </th>
+                        <td> {{ f.id }}</td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Name </th>
+                        <td>{{ f.nom}} </td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Email </th>
+                        <td>{{ f.email}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Address </th>
+                        <td>{{ f.address}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Phone number </th>
+                        <td>{{ f.tel}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Website </th>
+                        <td>{{ f.website}} </td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Category </th>
+                        <td>{{ f.categorie.libelle}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Image </th>
+                        <td> <img src="{{ asset('uploads/fournisseur/'~f.img) }}" alt="" width="50%"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Actions </th>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="{{ path('suppF', { 'id':f.id }) }}">Delete</a>
+                            <a class="btn btn-sm btn-primary" href="{{ path('updateF', { 'id':f.id }) }}">Update</a>
+                            <a class="btn btn-sm btn-primary" href="{{ path('afficheF',) }}">Go Back</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

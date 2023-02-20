@@ -1,0 +1,24 @@
+{% extends 'base1.html.twig' %}
+{% block table%}{% endblock%}
+
+{% block form%}
+    <br>
+    <h1 class="mb-0 text-primary text-center">Update Category</h1>
+    <br>
+    {{form_start(f,{'attr': {'novalidate': 'novalidate'}} )}}
+    <table class="table text-dark bg-light table-hover  ">
+
+        <tr>
+            <td class="text-center">{{ form_label(f.libelle,"Category's libel") }} </td>
+            <td class="text-center"> {{ form_widget(f.libelle) }} </td>
+            <td> {{ form_errors(f.libelle) }}</td>
+        </tr>
+
+    </table>
+    <div class="form-group " style="padding-left: 40%">
+        <button id="user_save" class="btn btn-primary flex-sm-row btn">{{ button_label|default('Update Category') }}</button>
+        <button   class="btn btn-secondary btn" href="{{ path('afficheCF') }}" >{{ button_label|default('Cancel') }}</button>
+    </div>
+    {{ form_end(f) }}
+{% endblock%}
+

@@ -1,0 +1,78 @@
+{% extends 'base1.html.twig' %}
+{% block menu%}
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="index.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Mall For All</h3>
+            </a>
+
+            <div class="navbar-nav w-100">
+                <a href="{{path('app_home')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i> Seller Dashboard </a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Shops</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-bag me-2"></i>Products</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Commandes</a>
+                <a href="{{path('afficheFV')}}" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Suppliers</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-calendar me-2"></i>Events</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-file-alt me-2"></i>Reclamations</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+{% endblock %}
+{% block table%}
+    <div class="container-fluid pt-4 px-4 ">
+        <div class="bg-light text-center rounded p-4 ">
+            <div class=" text-center justify-content-between mb-4 ">
+                <h3 class="mb-0 text-primary ">Supplier's Details</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-center align-middle table-bordered table-hover mb-0">
+
+                    <tr >
+                        <th  class="text-dark"> id </th>
+                        <td> {{ f.id }}</td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Name </th>
+                        <td>{{ f.nom}} </td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Email </th>
+                        <td>{{ f.email}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Address </th>
+                        <td>{{ f.address}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Phone number </th>
+                        <td>{{ f.tel}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Website </th>
+                        <td>{{ f.website}} </td>
+
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Category </th>
+                        <td>{{ f.categorie.libelle}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Image </th>
+                        <td> <img src="{{ asset('uploads/fournisseur/'~f.img) }}" alt="" width="50%"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-dark"> Actions </th>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="{{ path('afficheF',) }}">Go Back</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
