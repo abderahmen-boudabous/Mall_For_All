@@ -9871,7 +9871,7 @@
                 }
             ],
             "description": "Symfony Maker helps you create empty commands, controllers, form classes, tests and more so you can forget about writing boilerplate code.",
-            "homepage": "https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html",
+            "homepage": "https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html.twig",
             "keywords": [
                 "code generator",
                 "generator",
