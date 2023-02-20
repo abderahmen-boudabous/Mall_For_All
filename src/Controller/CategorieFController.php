@@ -51,9 +51,8 @@ class CategorieFController extends AbstractController
     {
         //recuperer la categorie a supprimer
         $cf=$r->find($id);
-        //dump($f->findOneBy(['categorie' => $cf->getId()]));exit;
         if ($f->findOneBy(['categorie' => $cf->getId()])) {
-            $this->addFlash('alert', 'NOOOOOOOOOOOOOOOOOOOOOOO!');
+            $this->addFlash('alert', 'ALERT! YOU CAN NOT DELETE THIS CATEGORY!');
             return $this->redirectToRoute('afficheCF',);
         } else {
             // action suppression
