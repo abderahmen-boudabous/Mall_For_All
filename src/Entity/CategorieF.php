@@ -20,7 +20,7 @@ class CategorieF
     #[Assert\NotBlank (message:"Libel can not be empty")]
     private ?string $libelle = null;
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Fournisseur::class)]
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Fournisseur::class, /*cascade: ['remove']*/)]
     private Collection $fournisseurs;
 
     public function __construct()
