@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+
+    
+{% block body %}
+{# <h1>Liste des produits</h1>
+
+    <table border="2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Description</th>
+                <th>Référence</th>
+                <th>Favoris</th>
+                <th>Passer une commande</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.id }}</td>
+                    <td>{{ produit.nom }}</td>
+                    <td>{{ produit.prix }}</td>
+                    <td>{{ produit.description }}</td>
+                    <td>{{ produit.reference }}</td>
+                    <td>
+                        <form  action="{{ path('produit_favori', {'id': produit.id}) }}">
+                            <button type="submit" class="btn btn-primary">Ajouter aux favoris</button>
+
+                           
+                        </form>
+                    </td>
+                    <td>
+                        <form  action="{{ path('commande_nouvelle', {'id': produit.id}) }}">
+                            <button type="submit" class="btn btn-primary">Commander</button>
+
+                           
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table> #}
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">List of products</h6>
+            </div>
+            <div class="row">
+            {% for i in produits %}
+            <div class="card" style="width: 25%">
+                {# <img class="" src="{{ asset('uploads/fournisseur/'~i.img) }}" alt="" width="100%"> #}
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{i.nom  }}</h5>
+                    <h5 class="card-title">Price: {{i.prix  }}</h5>
+                    <h5 class="card-title">Description: {{i.description }}</h5>
+                    <h5 class="card-title">Reference: {{i.reference  }} </h5>
+                    <a class="btn btn-sm btn-primary" href="{{ path('produit_favori', { 'id': i.id  }) }}"><i class="fa fa-heart me-2"></i></a>
+                    <a class="btn btn-sm btn-primary" href="{{ path('commande_nouvelle', { 'id': i.id  }) }}"><i class="fa fa-shopping-cart me-2"></i></a>
+                       
+                      
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

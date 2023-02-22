@@ -1,0 +1,58 @@
+{% extends 'base1.html.twig' %}
+
+
+{% block body %}
+<h1 class="text-secondary text-center container-fluid pt-4 px-4">Commands List</h1>
+
+
+    <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+        <thead>
+            <tr>
+                <th class="text-secondary">ID</th>
+                <th class="text-secondary">Name</th>
+                <th class="text-secondary">Adress</th>
+                <th class="text-secondary">Phone Number</th>
+
+                <th class="text-secondary">Quantity</th>
+                <th class="text-secondary">Price</th>
+                <th class="text-secondary">Product Id</th>
+                <th class="text-secondary">Edit</th>
+                <th class="text-secondary">Delete</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.nom }}</td>
+                    <td>{{ commande.adresse }}</td>
+                    <td>{{ commande.telephone }}</td>
+                    <td>{{ commande.quantite }}</td>
+                    <td>{{ commande.produit.prix }}</td>
+                    <td>{{ commande.produit.id }}</td>
+                    <td> 
+                     <a class="btn btn-sm btn-secondary" href="{{ path('updateCommande', { 'id': commande.id  }) }}">Edit</a></td>
+                     <td> 
+                     <a class="btn btn-sm btn-secondary" href="{{ path('suppCommande', { 'id': commande.id  }) }}">Delete</a></td> 
+                    
+              
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
