@@ -7,6 +7,7 @@ use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -136,6 +137,12 @@ class FournisseurController extends AbstractController
     public function emailSupplier($email): Response
     {
         return $this->render('fournisseur/emailFournisseur.html.twig', ['email' => $email,]);
+    }
+
+    #[Route('/search/', name: 'search')]
+    public function searchAction(request $request, FournisseurRepository $fournisseurRepository) : JsonResponse
+    {
+        return new JsonResponse($fournisseurRepository->search($request->request->get("search")));
     }
 
 

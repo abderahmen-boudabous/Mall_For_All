@@ -72,8 +72,9 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
+                    <input class="form-control border-0" id="search" type="search" placeholder="Search">
                 </form>
+                <button class="fa fa-search me-2" id="btn-search"></button>
                 <div class="navbar-nav align-items-center ms-auto">
                    {# <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -411,6 +412,7 @@
 
     <!-- Template Javascript -->
     <script src="{{asset ('js/main1.js') }}"></script>
+    <script src="{{asset ('js/search.js') }}"></script>
 </body>
 
 </html>

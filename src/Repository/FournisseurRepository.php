@@ -39,6 +39,20 @@ class FournisseurRepository extends ServiceEntityRepository
         }
     }
 
+    public function search(string $search)
+    {
+        return $this->createQueryBuilder('f')
+            ->select('f.id, f.nom, f.email, c.libelle, f.tel')
+            ->leftJoin('f.categorie', 'c')
+            ->where('f.nom LIKE :val')
+            ->orWhere('c.libelle LIKE :val')
+            ->orWhere('f.tel LIKE :val')
+            ->orWhere('f.email LIKE :val')
+            ->setParameter('val', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Fournisseur[] Returns an array of Fournisseur objects
 //     */
