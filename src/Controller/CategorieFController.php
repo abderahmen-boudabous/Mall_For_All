@@ -8,9 +8,12 @@ use App\Repository\CategorieFRepository;
 use App\Repository\FournisseurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CategorieFController extends AbstractController
 {
@@ -83,5 +86,63 @@ class CategorieFController extends AbstractController
             return $this->redirectToRoute('afficheCF',);
         }
         return $this->renderForm('categorie_f/updateC.html.twig',array("f"=>$form));
+    }
+    //CRUD pour sprint mobile (utilistation de JSON )
+
+    #[Route("/AllCategories", name: "AllCategories")]
+    //* Dans cette fonction, nous utilisons les services NormlizeInterface et categorieFRepository,
+        //* avec la méthode d'injection de dépendances.
+    public function AllCategories(CategorieFRepository  $repo, SerializerInterface $serializer, NormalizerInterface $normalizer)
+    {
+        $categories = $repo->findAll();
+        //* Nous utilisons la fonction normalize qui transforme le tableau d'objets categories en  tableau associatif simple.
+        //$categoriesNormalises = $normalizer->normalize($categories, 'json', ['groups' => "categories"]);
+
+        // //* Nous utilisons la fonction json_encode pour transformer un tableau associatif en format JSON
+         //$json = json_encode($categoriesNormalises);
+
+        $json = $serializer->serialize($categories, 'json', ['groups' => "categories"]);
+
+        //* Nous renvoyons une réponse Http qui prend en paramètre un tableau en format JSON
+        return new Response($json);
+    }
+
+    #[Route("Addcategory/new", name: "Addcategorie")]
+    public function Addcategorie(Request $req,   NormalizerInterface $Normalizer)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $category = new CategorieF();
+        $category->setLibelle($req->get('libelle'));
+        $em->persist($category);
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($category, 'json', ['groups' => 'students']);
+        return new Response(json_encode($jsonContent));
+    }
+    #[Route("Updatecategory/{id}", name: "Updatecategory")]
+    public function Updatecategory(Request $req, $id, NormalizerInterface $Normalizer)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository(CategorieF::class)->find($id);
+        $category->setLibelle($req->get('libelle'));
+
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($category, 'json', ['groups' => 'students']);
+        return new Response("category updated successfully " . json_encode($jsonContent));
+    }
+
+    #[Route("deletecategory/{id}", name: "deletecategory")]
+    public function deletecategory(Request $req, $id, NormalizerInterface $Normalizer)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository(CategorieF::class)->find($id);
+        $em->remove($category);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($category, 'json', ['groups' => 'students']);
+        return new Response("category deleted successfully " . json_encode($jsonContent));
     }
 }

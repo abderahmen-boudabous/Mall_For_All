@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FournisseurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use http\Message;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FournisseurRepository::class)]
@@ -13,19 +14,23 @@ class Fournisseur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("suppliers")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"name can not be empty")]
     private ?string $nom = null;
 
     #[ORM\ManyToOne(inversedBy: 'fournisseurs')]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"category can not be empty")]
     private ?CategorieF $categorie = null;
 
 
 
     #[ORM\Column]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"tel can not be empty")]
     #[Assert\Length (min:8,minMessage:"phone number must contain 8 numbers")]
     #[Assert\Length (max:8,maxMessage:"phone number must contain 8 numbers")]
@@ -33,20 +38,24 @@ class Fournisseur
     private ?int $tel = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"address can not be empty")]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"email can not be empty")]
     #[Assert\Email (message:"not the right format of an email")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("suppliers")]
     #[Assert\NotBlank (message:"website can not be empty")]
     #[Assert\Url (message:"not the right format of a website URL")]
     private ?string $website = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("suppliers")]
     private ?string $img = null;
 
     public function getId(): ?int
@@ -78,17 +87,6 @@ class Fournisseur
         return $this;
     }
 
-    public function getCIN(): ?int
-    {
-        return $this->CIN;
-    }
-
-    public function setCIN(int $CIN): self
-    {
-        $this->CIN = $CIN;
-
-        return $this;
-    }
 
     public function getTel(): ?int
     {

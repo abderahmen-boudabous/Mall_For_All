@@ -1,0 +1,54 @@
+{% extends 'base1.html.twig' %}
+{% block menu%}
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="index.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Mall For All</h3>
+            </a>
+
+            <div class="navbar-nav w-100">
+                <a href="{{path('app_home')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i> Seller Dashboard </a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Shops</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-bag me-2"></i>Products</a>
+                <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Commandes</a>
+                <a href="{{path('afficheFV')}}" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Suppliers</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-calendar me-2"></i>Events</a>
+                <a href="#" class="nav-link nav-link" ><i class="far fa-file-alt me-2"></i>Reclamations</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+{% endblock %}
+{% block table%}
+    <div class="container-fluid pt-4 px-4 ">
+        <div class="bg-light text-center rounded p-4 ">
+            <div class=" text-center justify-content-between mb-4 ">
+                <h3 class="mb-0 text-primary ">Send an Email</h3>
+            </div>
+            <div class="table-responsive text-primary">
+                <table class="table text-center text-primary  table-hover mb-0">
+
+                    <div class="col-lg-12 login-form text-primary">
+                        <form action="{#https://formspree.io/f/mlevgjje#}" method="POST">
+                            <tr>
+                                <th class="text-primary"> <label class="form-control-label"> <h4>Email</h4></label></th>
+                                <td><input type="email" name="email" class="form-control" placeholder="Your Email" required/></td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-primary"> <label class="form-control-label"> <h4>Message</h4></label></th>
+                                <td><input class="form-control" placeholder="Message " name="msg" required/></td>
+                            </tr>
+                            <tr  class="align-content-center">
+                                <td><button type="submit" class="btn btn-primary">Send Email</button></td>
+                                <td><button type="reset" class="btn btn-secondary   ">Cancel</button></td>
+                            </tr>
+                        </form>
+                    </div>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

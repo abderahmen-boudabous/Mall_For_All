@@ -63,6 +63,7 @@
 
 <!-- Header Section Begin -->
 <header class="header">
+    {% block navSup%}
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -90,6 +91,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-3">
@@ -101,11 +103,10 @@
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li class="active"><a href="">Home</a></li>
-                        <li><a href="">Shop</a></li>
-                        <li><a href="#">Event</a>
-                        </li>
-                        <li><a href="{{ path('afficheFC') }}">Suppliers</a></li>
-                        <li><a href="">Contacts</a></li>
+                        <li class="active"><a href="">Shop</a></li>
+                        <li class="active"><a href="#">Event</a></li >
+                        <li class="active"><a href="{{ path('afficheFC') }}">Suppliers</a></li>
+                        <li class="active"><a href="">Contacts</a></li>
                     </ul>
                 </nav>
             </div>
