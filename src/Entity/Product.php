@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -14,28 +15,34 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("products")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("products")]
     #[Assert\NotBlank(message:"Name cannot be empty")]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups("products")]
     #[Assert\NotBlank(message:"Description cannot be empty")]
     #[Assert\Length(min: 1)]
     #[Assert\Type('float',message:"Price must contain numbers only")]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("products")]
     #[Assert\NotBlank(message:"Type cannot be empty")]
     #[Assert\Type('alpha',message:"type must contain letters only")]
     private ?string $type = null;
     
 
     #[ORM\Column(length: 255)]
+    #[Groups("products")]
     private ?string $photo = null;
 
     #[ORM\Column]
+    #[Groups("products")]
     #[Assert\NotBlank(message:"Stock cannot be empty")]
     private ?int $stock = null;
 
@@ -43,6 +50,7 @@ class Product
     private ?Shop $shop = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("products")]
     private ?string $photo2 = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Comment::class)]

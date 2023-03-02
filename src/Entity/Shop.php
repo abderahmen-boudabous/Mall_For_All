@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Product;
-use App\Entity\Shop;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping\CascadeType;
 
 #[ORM\Entity(repositoryClass: ShopRepository::class)]
@@ -18,26 +18,32 @@ class Shop
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("shops")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("shops")]
     #[Assert\NotBlank(message:"Name cannot be empty")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("shops")]
     #[Assert\NotBlank(message:"Description cannot be empty")]
     #[Assert\Length(min: 5)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("shops")]
     private ?string $img = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("shops")]
     #[Assert\NotBlank(message:"Email cannot be empty")]
     #[Assert\Email(message:"Please enter a valid email")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("shops")]
     private ?string $date = null;
 
     #[ORM\OneToMany(mappedBy: 'shop', targetEntity: Product::class, cascade: ["remove"])]
@@ -144,8 +150,4 @@ class Shop
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->name;
-    }
 }

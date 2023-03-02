@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProductRepository;
@@ -21,6 +22,7 @@ use App\Form\CommentFormType;
 
 
 
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -32,17 +34,12 @@ class ProductController extends AbstractController
     #[Route('/afficheP', name: 'afficheP')]
      public function afficheP(ProductRepository $product): Response
                  {
-
-                    
                      $a=$product->findAll();
-                     
                      return $this->render('product/listp.html.twig', [
                      'products' => $a,'product'=>$product,
  
                      ]);
       }
-    
-
 
 
      #[Route('/affichePd', name: 'affichePd')]
@@ -53,6 +50,8 @@ class ProductController extends AbstractController
      'products' => $a,'product'=>$product
                      ]);
       }
+
+      
 
       #[Route('/affichePP', name: 'affichePP')]
       public function addS(Request $request,ManagerRegistry $doctrine,SluggerInterface $slugger): Response
@@ -197,12 +196,4 @@ class ProductController extends AbstractController
           }
 
 }
-
-       
-
-                           
-                                                  
-                           
-        
-
 
