@@ -1,0 +1,5 @@
+swiftmailer:
+    transport: gmail
+    username: 'arafetksiksi7@gmail.com'
+    password: 'Azerty913784265'
+    spool: { type: memory }

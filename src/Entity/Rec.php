@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RecRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,6 +52,14 @@ class Rec
     #[Assert\NotBlank(message:"Email cannot be empty")]
     #[Assert\Email(message:"Please enter a valid email")]
     private ?string $email = null;
+
+    #[ORM\OneToMany(mappedBy: 'recm', targetEntity: Message::class)]
+    private Collection $messages;
+
+    public function __construct()
+    {
+        $this->messages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -148,6 +158,36 @@ class Rec
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setRecm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getRecm() === $this) {
+                $message->setRecm(null);
+            }
+        }
 
         return $this;
     }

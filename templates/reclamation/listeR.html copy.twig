@@ -1,37 +1,19 @@
 {% extends 'base2.html.twig' %}
 {% block body %}
 
- <div class="table-responsive">
+<table>
+  <tr>
+    <th>Sender</th>
+    <th>Message</th>
 
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-<thead>
-                                <tr class="text-dark">
-    <th scope="col">User</th>
-    <th scope="col">Type</th>
-    <th scope="col">Subject</th>
-          <th scope="col">Date</th>
-    <th scope="col">Status</th>
-  
-
-    <th scope="col">Action</th>
   </tr>
-                              </thead>
-
-  {% for i in recs %}
+  {% for i in messages %}
     <tr>
-      <td>{{i.userR}}&nbsp;&nbsp;</td>
-      <td>{{i.rect.nomT}}&nbsp;&nbsp;</td>
-      <td>{{i.sujet}}&nbsp;&nbsp;</td>
-            <td>{{i.date}}&nbsp;&nbsp;</td>
+      <td>{{i.sender}}&nbsp;&nbsp;</td>
+      <td>{{i.contenum}}&nbsp;&nbsp;</td>
 
-      <td>
-        {% if i.etat == 'Not solved' %}
-          <span style="color:red;">{{ i.etat }}</span>
-        {% else %}
-          <span style="color:green;">{{ i.etat }}</span>
-        {% endif %}
-        &nbsp;&nbsp;&nbsp;
-      </td>
+
+
       <style>
   .add-button {
     background-color: #4CAF50; /* Green */
@@ -60,5 +42,4 @@
   {% endfor %}
 </table>
 {{ dump() }}
-
 {% endblock %}
