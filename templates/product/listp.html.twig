@@ -1,8 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+                  <section class="product spad">
+                    <div class="product__items">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="product__details__breadcrumb">
+                            <a href="/home">Home</a>
+                            <a href="/afficheB">Shop</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        {% for i in products %}
+                          <div class="col-lg-4 col-md-6">
+                            <div class="product__item">
+                              <div class="product__item__pic set-bg" data-setbg="{{ asset('upload/' ~ i.photo) }}" style="background-size: contain; background-repeat: no-repeat;">
+                                <ul class="product__hover">
+                                  <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a></li>
+                                  <li><a href="#"><img src="{{ asset('img/icon/compare.png') }}" alt=""> <span>Compare</span></a></li>
+                                  <li><a href="{{path('Detailproduct',{'id':i.id })}}"><img src="{{ asset('img/icon/search.png') }}"alt=""> <span>Detail</span></a></li>
+                                </ul>
+                              </div>
+                              <div class="product__item__text">
+                                <h6>{{ i.name }}</h6>
+                                <a href="#" class="add-cart">+ Add To Cart</a>
+                                
+                                <h5>{{ i.price }} Dt</h5>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </section>
+      </div>
+ </div>           
 
-  <table class="table" border = "3">
+
+
+{#
+   <table class="table" border = "3">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -17,7 +55,7 @@
     </thead>
     <tbody>
       {% for i in products %}
-        <tr>
+        <tr>    
           <td>{{i.name}}</td>
           <td>{{i.price}}Dt</td>
           <td>{{i.type}}</td>
@@ -32,47 +70,16 @@
             <td>No boutique associated</td>
           {% endif %}
           <td><img src="{{ (asset('upload/'~ i.photo)) }}" alt="LOGO" width="80" height="80"> </td>
-         <td> <button class="btn btn-success">
-
+         
+         <td> <button class="btn btn-success"><a href="{{path('Detailproduct',{'id':i.id })}}">detail</a>
         </tr>
+        
+        
       {% endfor %}
       
     </tbody>
-  </table>
-  
+  </table>#}
+
 {% endblock %}
 
-{% block stylesheets %}
-  <style>
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
 
-    th, td {
-      border: 1px solid #dddddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #dddddd;
-    }
-
-    .add-button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-  </style>
-{% endblock %}

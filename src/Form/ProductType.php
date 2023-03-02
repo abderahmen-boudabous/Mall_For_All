@@ -41,6 +41,23 @@ class ProductType extends AbstractType
                 ])
             ],
         ])
+        ->add('photo2', FileType::class, [
+            'label' => 'Select Product photo2 : ',
+            'mapped' => false,
+            'required' => false,
+            'constraints' => [
+                new File([
+                    'maxSize' => '1024k',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                        'image/jpg',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid image',
+                ])
+            ],
+        ])
 
         ->add('save',SubmitType::class);
         ;

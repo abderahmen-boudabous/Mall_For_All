@@ -16,6 +16,8 @@ use App\Form\UpdateBType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Data\SearchData;
+use App\Form\SearchForm;
 
 
 class ShopController extends AbstractController
@@ -32,9 +34,12 @@ class ShopController extends AbstractController
     public function afficheB(ShopRepository $Shop): Response
                 {
     
+                    
         $s=$Shop->findAll();
    return $this->render('shop/list.html.twig', [
     'Shops' => $s,'Shop'=>$Shop
+
+    
                     ]);
      }
 
@@ -135,6 +140,17 @@ class ShopController extends AbstractController
                                                         'Shop'=>$Shop,
                                                         'form' => $form->createView(),
                                                     ]);
+
+                                                    
                                           }
+         #[Route('/Dproduct/{id}', name: 'Dproduct')]
+        public function plans($id)
+        {
+            $product = $this->getDoctrine()->getRepository(Product::class)->findBy([
+                'shop' => $id,]);
+            return $this->render('product/listp.html.twig', [
+                'products' => $product,
+            ]);
+        }
                      
 }

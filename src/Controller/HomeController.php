@@ -24,4 +24,12 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/detail', name: 'app_detail')]
+    public function index3(): Response
+    {
+        return $this->render('detail/index.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
 }
