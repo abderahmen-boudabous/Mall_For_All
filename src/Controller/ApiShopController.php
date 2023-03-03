@@ -22,15 +22,7 @@ class ApiShopController extends AbstractController
         ]);
     }
 
-    #[Route('/afficheBj', name: 'afficheBj')]
-     public function afficheBj(ShopRepository $shop , SerializerInterface $serializer): Response
-                 {
-                    $a=$shop->findAll();
-                    $json = $serializer->serialize($a, 'json', ['groups' => "shops"]);
-                       
-                    return new Response($json);
-                 }
-
+   
       #[Route('/afficheBdj', name: 'afficheBdj')]
      public function afficheBdj(ShopRepository $shop , SerializerInterface $serializer): Response
                  {
@@ -40,6 +32,16 @@ class ApiShopController extends AbstractController
                      
                    return new Response($json);
                  }
+
+                 #[Route('/afficheBj', name: 'afficheBj')]
+                 public function afficheBj(ShopRepository $shop , SerializerInterface $serializer): Response
+                             {
+                                $a=$shop->findAll();
+                                $json = $serializer->serialize($a, 'json', ['groups' => "shops"]);
+                                   
+                                return new Response($json);
+                             }
+            
 
       #[Route('/afficheBBj', name: 'afficheBBj')]
       public function addBj(Request $request,NormalizerInterface $Normalizer): Response

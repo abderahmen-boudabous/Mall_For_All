@@ -27,17 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class ProductController extends AbstractController
 {
 
-    #[Route('/afficheP/{page?1}/{nbre?3}', name: 'afficheP')]
-     public function afficheP(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
-                 {
-                     $repository = $doctrine->getRepository(Product::class);
-                     $a=$product->findBy([],[],$nbre,($page -1) * $nbre);
-                     $nbproducts = $repository->count([]);
-                     $nbrePage = ceil($nbproducts / $nbre);
-
-                     return $this->render('product/listp.html.twig', [
-                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
-                 }
+    
       
 
      #[Route('/affichePd/{page?1}/{nbre?4}', name: 'affichePd')]
@@ -51,6 +41,18 @@ class ProductController extends AbstractController
                     return $this->render('product/listpd.html.twig', [
                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
       }
+
+      #[Route('/afficheP/{page?1}/{nbre?3}', name: 'afficheP')]
+     public function afficheP(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
+                 {
+                     $repository = $doctrine->getRepository(Product::class);
+                     $a=$product->findBy([],[],$nbre,($page -1) * $nbre);
+                     $nbproducts = $repository->count([]);
+                     $nbrePage = ceil($nbproducts / $nbre);
+
+                     return $this->render('product/listp.html.twig', [
+                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
+                 }
       
       #[Route('/affichePP', name: 'affichePP')]
       public function addS(Request $request,ManagerRegistry $doctrine,SluggerInterface $slugger): Response
