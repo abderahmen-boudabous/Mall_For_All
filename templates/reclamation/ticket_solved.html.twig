@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Ticket Solved</title>
+    </head>
+    <body>
+        <p>Dear {{ rec.userR }},</p>
+        <p>We are pleased to inform you that your support ticket with the following details has been solved:</p>
+        <ul>
+            <li>Subject: {{ rec.sujet }}</li>
+            <li>Message: {{ rec.contenu }}</li>
+        </ul>
+        <p>Thank you for using our support service. If you have any further questions or concerns, please do not hesitate to contact us.</p>
+        <p>Best regards,</p>
+        <p>The Support Team</p>
+    </body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base2.html.twig' %}
+{% block body %}
+
+<table>
+  <tr>
+    <th>Type</th>
+
+  </tr>
+  {% for i in recst %}
+    <tr>
+      <td>{{i.nomT}}&nbsp;&nbsp;</td>
+
+      <style>
+  .add-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+</style>
+      <td>
+      <button class="add-button"><a href="{{ path('updateRT',{'id': i.id})}}">Update</a> &nbsp;</button></td>
+      <td>
+        <form method="post" action="{{ path('delete', {'id': i.id}) }}">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
