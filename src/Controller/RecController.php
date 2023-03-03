@@ -8,13 +8,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RecRepository;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Rec;
 use App\Entity\Message;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\RecType;
 use App\Form\MessageFormType;
+use App\Form\MessageHFormType;
+
 use App\Form\updateRType;
 
 
@@ -133,6 +136,78 @@ class RecController extends AbstractController
                                                return $this->renderForm("reclamation/addMessage.html.twig",
                                                         array("form"=>$form));
                                                  }
+                                                 #[Route('/mytickets', name: 'mytickets')]
+                                                 public function myTicket(Request $request)
+                                                 {
+                                                     $recs = $this->getDoctrine()->getRepository(Rec::class)->findAll();
+                                                 
+                                                     $form = $this->createFormBuilder()
+                                                         ->add('userR', ChoiceType::class, array(
+                                                             'choices' => array_combine(array_map(function($rec) { return $rec->getUserR(); }, $recs), array_map(function($rec) { return $rec->getUserR(); }, $recs)),
+                                                             'placeholder' => 'Select a user',
+                                                             'required' => false,
+                                                         ))
+                                                         ->add('save', SubmitType::class, array(
+                                                            'label' => 'Submit',
+                                                        ))
+                                                         ->getForm();
+                                                 
+                                                     $form->handleRequest($request);
+                                                 
+                                                     if ($form->isSubmitted() && $form->isValid()) {
+                                                         $selectedUser = $form->getData()['userR'];
+                                                 
+                                                         $tickets = $this->getDoctrine()->getRepository(Rec::class)->findBy(array('userR' => $selectedUser));
+                                                     } else {
+                                                         $tickets = array();
+                                                     }
+                                                 
+                                                     return $this->render('reclamation/mytickets.html.twig', array(
+                                                         'form' => $form->createView(),
+                                                         'tickets' => $tickets,
+                                                     ));
+                                                 }
       
+                                                 #[Route('/updateRH/{id}', name: 'updateRH')]
+                                                 public function updateRH(Request $request, $id, \Swift_Mailer $mailer)
+                                                 {
+                                                     $rec = $this->getDoctrine()->getRepository(Rec::class)->find($id);
+                                                 
+                                                     $messages = $this->getDoctrine()->getRepository(Message::class)->findBy(['recm' => $rec]);
+                                                 
+                                                     return $this->render('reclamation/updateRH.html.twig', [
+                                                         'recs' => $rec,
+                                                         'rec' => $rec,
+                                                         'recm' => $rec,
+                                                         'messages' => $messages
+                                                     ]);
+                                                 }
+                                                 
+                                                 public function afficheMH(MessageRepository $message): Response
+                                                 {
+                                                     $messages = $message->findAll();
+                                                 
+                                                     return $this->render('reclamation/listeM.html.twig', [
+                                                         'messages' => $messages,
+                                                         'message' => $message
+                                                     ]);
+                                                 }       
+                                                 #[Route('/addMessageH', name: 'addMessageH')]
+                                 public function addMH(ManagerRegistry $doctrine,Request $request, EntityManagerInterface $entityManager)
+                                                {$m= new Message();
+                                                    $id = $request->query->get('id');
+                                                    
+                                                    $form = $this->createForm(MessageHFormType::class, $m, [
+                                                        'id' => $request->query->get('id'),
+                                                    ]);
+                                                    $form->handleRequest($request);
+                                                    if($form->isSubmitted() && $form->isValid()){
+                                                        $em =$doctrine->getManager() ;
+                                                        $em->persist($m);
+                                                        $em->flush();
+                                                        return $this->redirectToRoute("updateRH", ['id' => $id]);}
+                                               return $this->renderForm("reclamation/addMessageH.html.twig",
+                                                        array("form"=>$form));
+                                                 }         
    }
 
