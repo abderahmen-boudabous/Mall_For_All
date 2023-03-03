@@ -16,6 +16,7 @@ use App\Form\UpdateCategoryFormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
+
 class CategoryController extends AbstractController
 {
     #[Route('/category', name: 'app_category')]
@@ -112,6 +113,10 @@ class CategoryController extends AbstractController
                                         'form' => $form->createView(),
                                     ]);
                                 }
+
+
+                                
+
 
 
 }

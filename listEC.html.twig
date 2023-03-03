@@ -1,0 +1,111 @@
+{% extends 'base2.html.twig' %}
+
+
+{# {% block head_stylesheets %}
+    {{ parent() }}
+    {% block darkModeStylesheets %}
+        <style>
+            /* Dark Mode Styles */
+            .dark-mode {
+                background-color: #2c2c2c;
+                color: white;
+            }
+        </style>
+    {% endblock %}
+{% endblock %} #}
+
+{% block body %}
+
+
+
+    {% include 'line.html.twig' with { 'events': events } %}
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Tableau des événements</h6>
+                 <button id="dark-mode-toggle" onclick="toggleDarkMode()">dark mode</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th scope="col">catégorie</th>
+                            <th scope="col">Nom de l'événement </th>
+                            <th scope="col">Place disponible </th>
+                            <th scope="col">Durée de l'événement </th>
+                            <th scope="col">Date de l'événement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>{{ event.category.titre }}</td>
+                                <td>{{ event.Nom }}</td>
+                                <td>{{ event.Spot }}</td>
+                                <td>{{ event.Duration }}</td>
+                                <td>{{ event.Date|date('Y-m-d') }}</td>
+                            <td>
+
+
+                            </td>
+                                <td>
+                                    <form method="post" action="{{ path('delete', {'id': event.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="post" action="{{ path('updateE', {'id': event.id}) }}">
+                                        <input type="hidden" name="_method" value="UPDATE">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('Update') }}">
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br></br><br></br>
+                <form method="post" action="{{ path('addE') }}">
+                    <input type="hidden" name="_method" value="AJOUTER">
+                    <button type="submit" class="btn btn-success">Ajouter un événement</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token('Ajouter') }}">
+                    <a href="{{ path('event_pdf') }}" class="btn btn-secondary">generate PDF</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{# 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #2c2c2c;
+            color: white;
+        }
+    </style>
+{% endblock %} #}
+
+{% endblock %}
+
+
+{# {% block javascripts %}
+    <script>
+        function toggleDarkMode() {
+            var body = document.body;
+            body.classList.toggle("dark-mode");
+            // Set dark mode preference
+            localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
+        }
+
+        // Get dark mode preference
+        var darkMode = localStorage.getItem("darkMode");
+        if (darkMode === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+{% endblock %} #}
+

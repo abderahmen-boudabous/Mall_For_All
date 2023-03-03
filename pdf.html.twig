@@ -1,0 +1,82 @@
+{% block body %}
+
+    <div style="text-align: center;">
+        <h1 style="color: #003366; font-size: 36px; font-weight: bold; margin-bottom: 0;">
+            Mall For All
+        </h1>
+        <hr style="border: none; height: 3px; background-color: #003366; margin: 20px auto;">
+        <h2 style="color: #003366; font-size: 24px; font-weight: bold; margin-top: 0;">
+            Our Events
+        </h2>
+    </div>
+
+    <br><br><br><br><br><br><br>
+
+    {% set batchSize = 4 %}
+    {% for batch in event|batch(batchSize) %}
+
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">Event Name</th>
+                                <th scope="col">Available Spots</th>
+                                <th scope="col">Event Duration</th>
+                                <th scope="col">Event Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in batch %}
+                                <tr>
+                                    <td>{{ event.category.titre }}</td>
+                                    <td>{{ event.Nom }}</td>
+                                    <td>{{ event.Spot }}</td>
+                                    <td>{{ event.Duration }}</td>
+                                    <td>{{ event.Date|date('Y-m-d') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% if not loop.last %}
+            <div style="page-break-after: always;"></div>
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+    
+<style type="text/css">
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th {
+        background-color: #337ab7;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+    td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+{% endblock %}
