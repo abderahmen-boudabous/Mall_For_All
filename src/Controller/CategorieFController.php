@@ -87,7 +87,8 @@ class CategorieFController extends AbstractController
         }
         return $this->renderForm('categorie_f/updateC.html.twig',array("f"=>$form));
     }
-    //CRUD pour sprint mobile (utilistation de JSON )
+
+    //-------------------------------CRUD pour sprint mobile (utilistation de JSON )----------------------------------------
 
     #[Route("/AllCategories", name: "AllCategories")]
     //* Dans cette fonction, nous utilisons les services NormlizeInterface et categorieFRepository,
@@ -101,7 +102,7 @@ class CategorieFController extends AbstractController
         // //* Nous utilisons la fonction json_encode pour transformer un tableau associatif en format JSON
          //$json = json_encode($categoriesNormalises);
 
-        $json = $serializer->serialize($categories, 'json', ['groups' => "categories"]);
+        $json = $serializer->serialize($categories, 'json', ['groups' => "categories"]);//dump($json);exit;
 
         //* Nous renvoyons une réponse Http qui prend en paramètre un tableau en format JSON
         return new Response($json);
@@ -127,7 +128,6 @@ class CategorieFController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository(CategorieF::class)->find($id);
         $category->setLibelle($req->get('libelle'));
-
         $em->flush();
 
         $jsonContent = $Normalizer->normalize($category, 'json', ['groups' => 'students']);
@@ -145,4 +145,5 @@ class CategorieFController extends AbstractController
         $jsonContent = $Normalizer->normalize($category, 'json', ['groups' => 'students']);
         return new Response("category deleted successfully " . json_encode($jsonContent));
     }
+
 }

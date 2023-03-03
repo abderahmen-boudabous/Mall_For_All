@@ -15,11 +15,11 @@ class CategorieF
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("categories")]
+    #[Groups(["categories" , "suppliers"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("categories")]
+    #[Groups(["categories" ,"suppliers"])]
     #[Assert\NotBlank (message:"Libel can not be empty")]
     private ?string $libelle = null;
 
@@ -29,6 +29,10 @@ class CategorieF
     public function __construct()
     {
         $this->fournisseurs = new ArrayCollection();
+    }
+    public function __toString()
+    {
+        return $this->getLibelle();
     }
 
     public function getId(): ?int

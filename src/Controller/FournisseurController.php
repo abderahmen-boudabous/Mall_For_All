@@ -165,7 +165,7 @@ class FournisseurController extends AbstractController
     }
 
     #[Route("AddSupplier/new", name: "AddSupplier")]
-    public function AddSupplier(Request $req,   NormalizerInterface $Normalizer)
+    public function AddSupplier(Request $req,   NormalizerInterface $Normalizer, SluggerInterface $slugger)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -176,12 +176,33 @@ class FournisseurController extends AbstractController
         $supplier->setAddress($req->get('address'));
         $supplier->setEmail($req->get('email'));
         $supplier->setWebsite($req->get('website'));
-        $supplier->setImg($req->get('img'));
+        //image
+        $img = $req->get('img')->getData();
+        if ($img) {
+            $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$img->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $img->move(
+                    $this->getParameter('fournisseur_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            // updates the 'brochureFilename' property to store the PDF file name
+            // instead of its contents
+            $supplier->setImg($newFilename);
         $em->persist($supplier);
         $em->flush();
 
         $jsonContent = $Normalizer->normalize($supplier, 'json', ['groups' => 'suppliers']);
         return new Response(json_encode($jsonContent));
+    }
     }
     #[Route("UpdateSupplier/{id}", name: "UpdateSupplier")]
     public function UpdateSupplier(Request $req, $id, NormalizerInterface $Normalizer)
@@ -213,4 +234,16 @@ class FournisseurController extends AbstractController
         $jsonContent = $Normalizer->normalize($supplier, 'json', ['groups' => 'suppliers']);
         return new Response("supplier deleted successfully " . json_encode($jsonContent));
     }
+    #[Route("detailsSupplier/{id}", name: "detailsSupplier")]
+    public function detailsSupplier(Request $req, $id, SerializerInterface  $serializer)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $supplier = $em->getRepository(Fournisseur::class)->find($id);
+
+        $json = $serializer->serialize($supplier, 'json', ['groups' => "suppliers"]);
+        return new Response($json);}
+
+
+
 }

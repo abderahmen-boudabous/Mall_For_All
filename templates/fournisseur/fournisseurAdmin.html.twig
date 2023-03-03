@@ -1,4 +1,11 @@
 {% extends 'base1.html.twig' %}
+{% block search %}
+    <form class="d-none d-md-flex ms-4">
+        <input class="form-control border-0" id="search" type="search" placeholder="Search">
+    </form>
+    <span></span>
+    <button class=" btn-outline-primary fa fa-search me-2" id="btn-search" style="padding:1%"></button>
+{% endblock %}
 {% block table%}
     <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">

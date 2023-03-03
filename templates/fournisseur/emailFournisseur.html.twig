@@ -30,7 +30,7 @@
                 <table class="table text-center text-primary  table-hover mb-0">
 
                     <div class="col-lg-12 login-form text-primary">
-                        <form action="{#https://formspree.io/f/mlevgjje#}" method="POST">
+                        <form action="https://formsubmit.co/{#hamdi2000jomaa@gmail.com#}"~{{ email}} method="POST">
                             <tr>
                                 <th class="text-primary"> <label class="form-control-label"> <h4>Email</h4></label></th>
                                 <td><input type="email" name="email" class="form-control" placeholder="Your Email" required/></td>
@@ -41,7 +41,7 @@
                                 <td><input class="form-control" placeholder="Message " name="msg" required/></td>
                             </tr>
                             <tr  class="align-content-center">
-                                <td><button type="submit" class="btn btn-primary">Send Email</button></td>
+                                <td><button type="submit" class="btn btn-primary"href="{{ path('afficheFV',) }}">Send Email</button></td>
                                 <td><button type="reset" class="btn btn-secondary   ">Cancel</button></td>
                             </tr>
                         </form>
