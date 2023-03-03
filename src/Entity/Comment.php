@@ -19,6 +19,15 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?Product $product = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Likes = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Dislike = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $rate = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +53,42 @@ class Comment
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getLikes(): ?string
+    {
+        return $this->Likes;
+    }
+
+    public function setLikes(?string $Likes): self
+    {
+        $this->Likes = $Likes;
+
+        return $this;
+    }
+
+    public function getDislike(): ?string
+    {
+        return $this->Dislike;
+    }
+
+    public function setDislike(?string $Dislike): self
+    {
+        $this->Dislike = $Dislike;
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): self
+    {
+        $this->rate = $rate;
 
         return $this;
     }

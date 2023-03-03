@@ -12,47 +12,46 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProductRepository;
 use App\Entity\Product;
 use App\Entity\Comment;
-use App\Entity\Shop;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\ProductType;
 use App\Form\UpdatePType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CommentFormType;
-
-
-
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 
 class ProductController extends AbstractController
 {
-    
 
-    #[Route('/afficheP', name: 'afficheP')]
-     public function afficheP(ProductRepository $product): Response
+    #[Route('/afficheP/{page?1}/{nbre?3}', name: 'afficheP')]
+     public function afficheP(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
                  {
-                     $a=$product->findAll();
+                     $repository = $doctrine->getRepository(Product::class);
+                     $a=$product->findBy([],[],$nbre,($page -1) * $nbre);
+                     $nbproducts = $repository->count([]);
+                     $nbrePage = ceil($nbproducts / $nbre);
+
                      return $this->render('product/listp.html.twig', [
-                     'products' => $a,'product'=>$product,
- 
-                     ]);
-      }
-
-
-     #[Route('/affichePd', name: 'affichePd')]
-     public function affichePd(ProductRepository $product): Response
-                 {
-         $a=$product->findAll();
-    return $this->render('product/listpd.html.twig', [
-     'products' => $a,'product'=>$product
-                     ]);
-      }
-
+                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
+                 }
       
 
+     #[Route('/affichePd/{page?1}/{nbre?4}', name: 'affichePd')]
+     public function affichePd(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
+                 {
+                    $repository = $doctrine->getRepository(Product::class);
+                    $a=$product->findBy([],[],$nbre,($page -1) * $nbre);
+                    $nbproducts = $repository->count([]);
+                    $nbrePage = ceil($nbproducts / $nbre);
+
+                    return $this->render('product/listpd.html.twig', [
+                    'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
+      }
+      
       #[Route('/affichePP', name: 'affichePP')]
       public function addS(Request $request,ManagerRegistry $doctrine,SluggerInterface $slugger): Response
       {
@@ -164,20 +163,17 @@ class ProductController extends AbstractController
             return $this->render('product/detailprod.html.twig', [
                 'products' => $product,
                 'comments' => $comments
-                
             ]);
         }
+
         public function afficheM(CommentRepository $comment): Response
             {
                 $comments = $comment->findAll();
-
                 return $this->render('product/comment.html.twig', [
                     'comments' => $comments,
                     'comment' => $comment
                 ]);
             }
-
-
             #[Route('/addcomment', name: 'addcomment')]
                public function addM(ManagerRegistry $doctrine,Request $request, EntityManagerInterface $entityManager)
            {$m= new Comment();
@@ -194,6 +190,6 @@ class ProductController extends AbstractController
         return $this->renderForm("product/comment.html.twig",
        array("formc"=>$formc));
           }
-
+                    
 }
 

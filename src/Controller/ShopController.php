@@ -2,22 +2,20 @@
 
 namespace App\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
 use App\Entity\Product;
 use App\Entity\Shop;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Form\ShopType;
 use App\Form\UpdateBType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Data\SearchData;
-use App\Form\SearchForm;
+
 
 
 class ShopController extends AbstractController
@@ -30,26 +28,29 @@ class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/afficheB', name: 'afficheB')]
-    public function afficheB(ShopRepository $Shop): Response
+    #[Route('/afficheB/{page?1}/{nbre?3}', name: 'afficheB')]
+    public function afficheB(ShopRepository $Shop,ManagerRegistry $doctrine,$nbre,$page): Response
                 {
-    
-                    
-        $s=$Shop->findAll();
-   return $this->render('shop/list.html.twig', [
-    'Shops' => $s,'Shop'=>$Shop
+                    $repository = $doctrine->getRepository(Shop::class);
+                    $s=$Shop->findBy([],[],$nbre,($page -1) * $nbre);
+                    $nbShops = $repository->count([]);
+                    $nbrePage = ceil($nbShops / $nbre);
 
-    
-                    ]);
+                    return $this->render('shop/list.html.twig', [
+                    'Shops' => $s,'Shop'=>$Shop, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
+                    
      }
 
-     #[Route('/afficheBd', name: 'afficheBd')]
-    public function afficheBd(ShopRepository $Shop): Response
+     #[Route('/afficheBd/{page?1}/{nbre?3}', name: 'afficheBd')]
+    public function afficheBd(ShopRepository $Shop,ManagerRegistry $doctrine,$nbre,$page): Response
                 {
-        $s=$Shop->findAll();
-   return $this->render('shop/listd.html.twig', [
-    'Shops' => $s,'Shop'=>$Shop
-   ]);
+                    $repository = $doctrine->getRepository(Shop::class);
+                    $s=$Shop->findBy([],[],$nbre,($page -1) * $nbre);
+                    $nbShops = $repository->count([]);
+                    $nbrePage = ceil($nbShops / $nbre);
+
+                    return $this->render('shop/listd.html.twig', [
+                    'Shops' => $s,'Shop'=>$Shop, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
      }
 
      #[Route('/afficheBB', name: 'afficheBB')]
@@ -139,18 +140,18 @@ class ShopController extends AbstractController
                                                        return $this->render('Shop/confirm_delete.html.twig', [
                                                         'Shop'=>$Shop,
                                                         'form' => $form->createView(),
-                                                    ]);
-
-                                                    
+                                                    ]);    
                                           }
          #[Route('/Dproduct/{id}', name: 'Dproduct')]
         public function plans($id)
         {
             $product = $this->getDoctrine()->getRepository(Product::class)->findBy([
                 'shop' => $id,]);
-            return $this->render('product/listp.html.twig', [
+            return $this->render('product/listpp.html.twig', [
                 'products' => $product,
             ]);
         }
-                     
+
+          
+        
 }

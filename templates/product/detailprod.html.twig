@@ -126,20 +126,32 @@
   <div class="col-md-12">
     <h3>Customer Reviews</h3>
     <div class="comment-list">
-      {% for comment in comments %}
-        <div class="card mb-3">
-          <div class="card-body">
-            
-            <p class="card-text">{{ comment.comment }}</p>
-          </div>
-        </div>
-      {% endfor %}
+     {% for comment in comments %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="card-text">{{ comment.comment }}</p>
+
+      <p>
+        <a href="{{ path('app_likes', {'id': comment.id}) }}" class="text-danger">&#128077; </a>
+{% if comment.Likes is not empty %}
+    {{ comment.Likes }} like(s)
+{% else %}
+    0 like
+{% endif %}
+
+<a href="{{ path('app_dislikes', {'id': comment.id}) }}" class="text-danger">&#128078; </a>
+{% if comment.Dislike is not empty %}
+    {{ comment.Dislike }} dislike(s)
+{% else %}
+    0 dislike
+{% endif %}
+      </p>
+    </div>
+  </div>
+{% endfor %}
     </div>
   </div>
 </div>
-    
-
-
   <a href="{{ path('addcomment', {'id': i.id}) }}" class="btn btn-primary">Add Comment</a>
 
 

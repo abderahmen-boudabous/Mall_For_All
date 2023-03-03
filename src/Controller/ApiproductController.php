@@ -43,7 +43,7 @@ class ApiproductController extends AbstractController
       }
 
       #[Route('/affichePPj', name: 'affichePPj')]
-      public function addSj(Request $request,NormalizerInterface $Normalizer): Response
+      public function addBj(Request $request,NormalizerInterface $Normalizer): Response
       {
         $em = $this->getDoctrine()->getManager();
         $product = new Product();
