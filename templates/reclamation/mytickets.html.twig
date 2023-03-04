@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h3 class="my-3">My Tickets</h3>
+
+{{ form_start(form) }}
+    <div class="form-group">
+        {{ form_widget(form.userR, {'attr': {'class': 'form-control', 'placeholder': 'Enter your name'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+{{ form_end(form) }}
+
+
+    {% if tickets|length > 0 %}
+        <h2>Tickets submitted by {{ form.vars.value.userR }}</h2>
+
+        <table class="table table-striped table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.sujet }}</td>
+                        <td>{{ ticket.contenu }}</td>
+                        <td>{{ ticket.etat }}</td>
+                        <td><button class="add-button"><a href="{{ path('updateRH', {'id': ticket.id}) }}">Answer</a></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-control {
+        border-radius: 0;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 0;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+</style>
+
+
+
+
+
+
+{% endblock %}
