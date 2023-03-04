@@ -1,0 +1,100 @@
+ {% extends 'base.html.twig' %} 
+
+
+
+     {% block header %} 
+     {% endblock %} 
+
+      
+
+     {% block menu %} 
+      
+  <div class="container col-12 text-center" align="center">    
+    <div class="row">
+      <div class="container col-12 text-center" align="center">
+        <div class="header__logo">
+          <a href="./index.html"><img src="{{ asset('img/logoMFA.png') }}" alt="" width="50%" ></a>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </div>
+{% endblock %} 
+     
+     
+     
+     
+     
+      
+      
+   {% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Register</h2>
+                {{ form_start(registrationForm,{attr:{novalidate:'novalidate'}}) }}
+               
+                <div class="form-group">
+                    {{ form_label(registrationForm.nom, 'Last Name') }}
+                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.nom) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(registrationForm.prenom, 'First Name') }}
+                    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.prenom) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(registrationForm.email, 'Email') }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(registrationForm.plainPassword, 'Password') }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+
+
+                <tr>
+            <th>{{ form_label(registrationForm.roles) }}</th>
+            <td>{{ form_widget(registrationForm.roles) }}</td>
+        </tr>
+                {# <div class="form-group">
+                    {{ form_label(registrationForm.roles, 'Role') }}
+                   <div class="form-check">
+                   {{ form_widget(registrationForm.roles.user, {'attr': {'class': 'form-check-input'}}) }}
+                   {{ form_label(registrationForm.roles.user, 'User', {'label_attr': {'class': 'form-check-label'}}) }}
+                    </div>
+                   <div class="form-check">
+                   {{ form_widget(registrationForm.roles.vendeur, {'attr': {'class': 'form-check-input'}}) }}
+                   {{ form_label(registrationForm.roles.vendeur, 'Vendeur', {'label_attr': {'class': 'form-check-label'}}) }}
+                   </div>
+                   {{ form_errors(registrationForm.roles) }}
+                   </div> #}
+
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                <a href="{{ path('app_login') }}">Se connecter</a>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+{% block footer %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+ 

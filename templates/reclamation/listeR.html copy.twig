@@ -1,0 +1,45 @@
+{% extends 'base1.html.twig' %}
+{% block body %}
+
+<table>
+  <tr>
+    <th>Sender</th>
+    <th>Message</th>
+
+  </tr>
+  {% for i in messages %}
+    <tr>
+      <td>{{i.sender}}&nbsp;&nbsp;</td>
+      <td>{{i.contenum}}&nbsp;&nbsp;</td>
+
+
+
+      <style>
+  .add-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+</style>
+      <td>
+      <button class="add-button"><a href="{{ path('updateR',{'id': i.id})}}">Answer</a> &nbsp;</button></td>
+      <td>
+        <form method="post" action="{{ path('deleteR', {'id': i.id}) }}">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <input type="hidden" name="_token" value="{{ csrf_token('deleteR') }}">
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{{ dump() }}
+{% endblock %}

@@ -1,0 +1,183 @@
+ {# {% extends 'base1.html.twig' %}  
+{% block title %}  Modifier les utilisateurs {% endblock  %}
+
+
+ 
+ {% block body %}
+<h1>Modifier l'utilisateur</h1>
+
+{{form(userForm ) }}
+  {% endblock  %} #}
+
+{% extends 'base1.html.twig' %}  
+
+
+
+ 
+ {% block body %}
+
+
+ <div class="container-xxl position-relative bg-white d-flex p-0">
+
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="{{ path('admin_index') }}" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Mall For All</h3>
+                </a>
+
+                <div class="navbar-nav w-100">
+                    <a href="{{ path('admin_index') }}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i> Admin Dashboard </a>
+                    <a href="{{ path('admin_utlisateurs') }}" class="nav-item nav-link" ><i class="fa fa-laptop me-2"></i>Users</a>
+                    <a href="#" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Shops</a>
+                    <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-bag me-2"></i>Products</a>
+                    <a href="#" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Commandes</a>
+                    <a href="#" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Fournisseurs</a>
+                    <a href="#" class="nav-link nav-link" ><i class="far fa-calendar me-2"></i>Events</a>
+                    <a href="#" class="nav-link nav-link" ><i class="far fa-file-alt me-2"></i>Reclamations</a>
+
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="{{ path('admin_index') }}" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                   
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Profile updated</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">New user added</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Password changed</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src= "{{ asset('img/user.jpg') }}" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"> Admin </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="{{ path('app_logout') }}" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+           
+
+
+            <!-- Sale & Revenue Start -->
+            
+
+           
+
+
+
+{{ form_start(Form, {'attr': {'class': 'form-horizontal'}}) }}
+
+<div class="form-group">
+    {{ form_label(Form.email, 'Email', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.email, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.nom, 'Nom', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.nom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.prenom, 'Prenom', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.prenom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.adresse, 'Adresse', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.adresse, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.codepostale, 'Code postale', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.codepostale, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.numtel, 'Numéro de téléphone', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.numtel, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(Form.ville, 'Ville', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.ville, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+{# <div class="form-group">
+    {{ form_label(Form.nomBoutique, 'Nom de la boutique', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+    <div class="col-sm-9">
+        {{ form_widget(Form.nomBoutique, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div> #}
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(Form.Valider, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+</div>
+{# <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(Form.Choisir,un,fichier, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+</div> #}
+
+
+{{ form_end(Form) }}
+
+                     
+ {% endblock  %}
+

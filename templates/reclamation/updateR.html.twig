@@ -1,0 +1,23 @@
+{% extends 'base1.html.twig' %}
+
+{% block body %}
+
+      <div class="card mb-3">
+      <div class="card-header">{{ rec.userR }}</div>
+      <div class="card-body">
+        <p class="card-text">{{ rec.contenu }}</p>
+      </div>
+    </div>
+  {% for message in messages %}
+    <div class="card mb-3">
+      <div class="card-header">{{ message.sender }}</div>
+      <div class="card-body">
+        <p class="card-text">{{ message.contenum }}</p>
+      </div>
+    </div>
+  {% endfor %}
+  {{ form(formu) }}
+
+  <a href="{{ path('addMessage', {'id': recm.id}) }}" class="btn btn-primary">Add Message</a>
+
+{% endblock %}

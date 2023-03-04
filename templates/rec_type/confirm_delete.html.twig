@@ -1,0 +1,26 @@
+{% extends 'base1.html.twig' %}
+
+{% block body %}
+    <form method="post" action="{{ path('delete', {'id': rect.id}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rect.id) }}">
+        <h1>Are you sure you want to delete {{ rect.nomT }}</h1>
+        {% if rect.rec %}
+            <h3>The following tickets are using this ticket type and they will be deleted </h3>
+            <table>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Ticket Subject</th>
+                </tr>
+                {% for rec in rect.rec %}
+                    <tr>
+                        <td>{{ rec.id }}</td>
+                        <td>{{ rec.sujet }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        <button type="submit" class="btn btn-danger">Yes</button>
+    </form>
+    <a class="btn btn-primary" href="{{ path('afficheRT') }}">No</a>
+{% endblock %}

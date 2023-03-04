@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h3>My Tickets</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Content</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.sujet }}</td>
+                    <td>{{ ticket.contenu }}</td>
+                    <td>{{ ticket.etat }}</td>
+                    <td><a href="{{ path('updateRH', {'id': ticket.id}) }}">View</a></td>
+                </tr>
+                {% if ticket.etat == 'Solved' and app.user.email == ticket.email %}
+                    <div id="flash-message-{{ ticket.id }}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        Your ticket "{{ ticket.sujet }}" is solved.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            $('#flash-message-{{ ticket.id }}').fadeOut('slow');
+                        }, 5000);
+                    </script>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base1.html.twig' %}
+
+{% block body %}
+    <h1>Delete RecT</h1>
+
+    <p>Are you sure you want to delete "{{ rect.nomT }}" and set related records in Rec to NULL?</p>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    <a href="{{ path('afficheRT') }}">Back to list</a>
+{% endblock %}
+
+
+
+
