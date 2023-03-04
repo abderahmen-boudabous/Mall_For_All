@@ -56,9 +56,11 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Comment::class)]
     private Collection $comments;
 
+    
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -179,5 +181,7 @@ class Product
 
         return $this;
     }
+
+
    
 }

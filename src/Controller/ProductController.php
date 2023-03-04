@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 
+use App\Entity\PriceSearch;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -16,19 +17,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\ProductType;
 use App\Form\UpdatePType;
+use App\Form\PriceSearchType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CommentFormType;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+
 
 
 
 class ProductController extends AbstractController
 {
 
-    
-      
+   
 
      #[Route('/affichePd/{page?1}/{nbre?4}', name: 'affichePd')]
      public function affichePd(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
@@ -42,7 +43,7 @@ class ProductController extends AbstractController
                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
       }
 
-      #[Route('/afficheP/{page?1}/{nbre?3}', name: 'afficheP')]
+      #[Route('/afficheP/{page?1}/{nbre?6}', name: 'afficheP')]
      public function afficheP(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
                  {
                      $repository = $doctrine->getRepository(Product::class);
@@ -192,6 +193,28 @@ class ProductController extends AbstractController
         return $this->renderForm("product/comment.html.twig",
        array("formc"=>$formc));
           }
-                    
+          
+          #[Route('/art_prix', name: 'article_par_prix', methods: ['GET', 'POST'])]
+public function articlesParPrix(Request $request, ManagerRegistry $doctrine)
+{
+    $priceSearch = new PriceSearch();
+    $form = $this->createForm(PriceSearchType::class, $priceSearch);
+    $form->handleRequest($request);
+    $Product = [];
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $minPrice = $priceSearch->getMinPrice();
+        $maxPrice = $priceSearch->getMaxPrice();
+        
+        $Product = $doctrine->getRepository(Product::class)->findByPriceRange($minPrice, $maxPrice);
+    }
+
+    return $this->render('product/articlesParPrix.html.twig', [
+        'form' => $form->createView(),
+        'product' => $Product,
+    ]);
 }
+}
+                    
+
 

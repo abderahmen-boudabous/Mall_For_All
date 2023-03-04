@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\PropertySearch;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -13,6 +14,7 @@ use App\Entity\Shop;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ShopType;
 use App\Form\UpdateBType;
+use App\Form\PropertySearchType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -28,7 +30,7 @@ class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/afficheB/{page?1}/{nbre?3}', name: 'afficheB')]
+    #[Route('/afficheB/{page?1}/{nbre?4}', name: 'afficheB')]
     public function afficheB(ShopRepository $Shop,ManagerRegistry $doctrine,$nbre,$page): Response
                 {
                     $repository = $doctrine->getRepository(Shop::class);
@@ -38,10 +40,10 @@ class ShopController extends AbstractController
 
                     return $this->render('shop/list.html.twig', [
                     'Shops' => $s,'Shop'=>$Shop, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
-                    
      }
+     
 
-     #[Route('/afficheBd/{page?1}/{nbre?3}', name: 'afficheBd')]
+     #[Route('/afficheBd/{page?1}/{nbre?5}', name: 'afficheBd')]
     public function afficheBd(ShopRepository $Shop,ManagerRegistry $doctrine,$nbre,$page): Response
                 {
                     $repository = $doctrine->getRepository(Shop::class);
@@ -152,6 +154,9 @@ class ShopController extends AbstractController
             ]);
         }
 
+       
+       
+        
           
         
 }
