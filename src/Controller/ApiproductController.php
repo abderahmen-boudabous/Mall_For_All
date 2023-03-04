@@ -11,6 +11,7 @@ use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Entity\Shop;
 
 
 class ApiproductController extends AbstractController
@@ -50,11 +51,10 @@ class ApiproductController extends AbstractController
         $product->setName($request->get('Name'));
         $product->setPrice($request->get('Price'));
         $product->setType($request->get('Type'));
-        $product->setStock($request->get('Stock'));
         $product->setShop($request->get('Shop'));
+        $product->setStock($request->get('Stock'));
         
         
-
         $em->persist($product);
         $em->flush();
 

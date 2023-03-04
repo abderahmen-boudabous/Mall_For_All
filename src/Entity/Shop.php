@@ -18,32 +18,32 @@ class Shop
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     #[Assert\NotBlank(message:"Name cannot be empty")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     #[Assert\NotBlank(message:"Description cannot be empty")]
     #[Assert\Length(min: 5)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     private ?string $img = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     #[Assert\NotBlank(message:"Email cannot be empty")]
     #[Assert\Email(message:"Please enter a valid email")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("shops")]
+    #[Groups(["shops" , "products"])]
     private ?string $date = null;
 
     #[ORM\OneToMany(mappedBy: 'shop', targetEntity: Product::class, cascade: ["remove"])]

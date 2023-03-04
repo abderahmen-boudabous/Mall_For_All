@@ -47,6 +47,7 @@ class Product
     private ?int $stock = null;
 
     #[ORM\ManyToOne(inversedBy: 'product')]
+    #[Groups("products")]
     private ?Shop $shop = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -55,6 +56,12 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Comment::class)]
     private Collection $comments;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Likes = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $dislike = null;
 
     
     public function __construct()
@@ -182,6 +189,30 @@ class Product
         return $this;
     }
 
+    public function getLikes(): ?string
+    {
+        return $this->Likes;
+    }
 
+    public function setLikes(?string $Likes): self
+    {
+        $this->Likes = $Likes;
+
+        return $this;
+    }
+
+    public function getDislike(): ?string
+    {
+        return $this->dislike;
+    }
+
+    public function setDislike(?string $dislike): self
+    {
+        $this->dislike = $dislike;
+
+        return $this;
+    }
+
+  
    
 }

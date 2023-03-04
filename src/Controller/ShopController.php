@@ -53,7 +53,7 @@ class ShopController extends AbstractController
 
                     return $this->render('shop/listd.html.twig', [
                     'Shops' => $s,'Shop'=>$Shop, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
-     }
+                  }
 
      #[Route('/afficheBB', name: 'afficheBB')]
      public function addB(ManagerRegistry $doctrine,Request $request,SluggerInterface $slugger)
