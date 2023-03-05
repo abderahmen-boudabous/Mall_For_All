@@ -1,0 +1,170 @@
+<head>  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<style>
+    .event-details {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        z-index: 10000;
+    }
+
+    .event-details h2 {
+        margin-top: 0;
+        color: #1E90FF;
+    }
+
+    .event-details p {
+        margin-bottom: 0;
+    }
+
+    .event-details button {
+        margin-top: 20px;
+        background-color: #1E90FF;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+
+
+{# <td> {{app.user.id}}</td> #}
+
+<div class="event-details">
+
+    <h2>{{ event.Nom }}</h2>
+    <h>  catégorie : </h>
+    <p>{{    event.category.titre   }} </p>
+    <br><br><br><br>
+    <h> Date de l'événement : </h>
+    <p>{{ event.Date|date('Y-m-d') }}</p>
+    <br><br><br><br>
+    <h>  Durée de l'événement : </h>
+    <p>{{ event.Duration }}</p>
+    <br><br><br><br>
+    <h>  Place disponible : </h>
+    <p>{{ event.Spot }}</p>
+    
+    <!-- Add more fields here as necessary -->
+    {# <a href="{{ path('afficheEC') }}"> #}
+    {# <button id="hidden-button" style="display:none;">cancel participation</button> #}
+<button id="participate-btn">Participate</button>
+{# <button id="unparticipate-btn">Unparticipate</button> #}
+
+
+<button id="unparticipate-btn" style="display:none; background-color: red;">cancel participation</button> 
+
+  {# </a>  #}
+
+{# 
+{% if is_participant %}
+    <button id="cancel-participation-btn">Cancel Participation</button>
+{% else %}
+    <button id="participate-btn">Participate</button>
+{% endif %} #}
+
+
+<a href="{{ path('afficheEC') }}" class="btn btn-primary">
+<button> Return to Event List </button>
+</a>
+<br><br>
+{{form(f)}}
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('participate-btn').addEventListener('click', function() {
+            var eventId = {{ event.id }};
+            var eventUrl = '/event/' + eventId + '/participate';
+            fetch(eventUrl, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        var newSpotValue = data.new_spot_value;
+                        document.querySelector('.event-details p:contains("Spot")').textContent = 'Spot: ' + newSpotValue;
+                    }
+                });
+        }); 
+
+    });
+
+
+        document.getElementById('unparticipate-btn').addEventListener('click', function() {
+            var eventId = {{ event.id }};
+            var eventUrl = '/event/' + eventId + '/unparticipate';
+            fetch(eventUrl, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        var newSpotValue = data.new_spot_value;
+                        document.querySelector('.event-details p:contains("Spot")').textContent = 'Spot: ' + newSpotValue;
+                    }
+                });
+        });
+
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+document.getElementById('test-btn').addEventListener('click', function() {
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('test-btn').addEventListener('click', function() {
+        var eventId = {{ event.id }};
+        var userId = {{ app.user.id }}; // assuming you have a user object available in your Twig template
+        var eventUrl = '/event/' + eventId + '/test';
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(eventUrl, { 
+            method: 'POST', 
+            body: JSON.stringify({userId: userId, _token: csrfToken})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Participant added successfully!');
+            }
+        });
+    });
+});
+
+
+
+
+
+
+    console.log({{ app.user.id }});
+});
+
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#participate-btn").click(function() {
+    $("#unparticipate-btn").show();
+    $("#participate-btn").hide();
+  });
+});
+
+</script>
