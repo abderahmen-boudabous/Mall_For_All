@@ -12,6 +12,7 @@
                         <th  class="text-dark"> id </th>
                         <td> {{ f.id }}</td>
 
+
                     </tr>
                     <tr>
                         <th class="text-dark"> Name </th>
@@ -32,7 +33,7 @@
                     </tr>
                     <tr>
                         <th class="text-dark"> Website </th>
-                        <td>{{ f.website}} </td>
+                        <td> <img src="{{ qr }}" alt="QR code" style="height:25%;width:25%"/></td>
 
                     </tr>
                     <tr>
@@ -41,7 +42,7 @@
                     </tr>
                     <tr>
                         <th class="text-dark"> Image </th>
-                        <td> <img src="{{ asset('uploads/fournisseur/'~f.img) }}" alt="" width="50%"></td>
+                        <td> <img src="{{ asset('uploads/fournisseur/'~f.img) }}" alt="" style="height:25%;width:25%"></td>
                     </tr>
                     <tr>
                         <th class="text-dark"> Actions </th>

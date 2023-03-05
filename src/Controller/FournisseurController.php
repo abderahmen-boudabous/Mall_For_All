@@ -6,6 +6,16 @@ use App\Entity\Fournisseur;
 use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +70,6 @@ class FournisseurController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $img = $form->get('img')->getData();
-
             // this condition is needed because the 'brochure' field is not required
             // so the PDF file must be processed only when a file is uploaded
             if ($img) {
@@ -83,6 +92,7 @@ class FournisseurController extends AbstractController
                 // instead of its contents
                 $fournisseur->setImg($newFilename);
             }
+            //enregistrement dans BD
             $em=$doctrine->getManager();
             $em->persist($fournisseur);
             $em->flush();
@@ -104,33 +114,93 @@ class FournisseurController extends AbstractController
     }
 
     #[Route('/Update_Supplier/{id}', name: 'updateF')]
-    public function updateF(FournisseurRepository  $r,ManagerRegistry $doctrine , request $request,$id): Response
+    public function updateF(FournisseurRepository  $r,ManagerRegistry $doctrine , request $request,$id, SluggerInterface $slugger): Response
     {
-        $f=$r->find($id);
+        $f = $r->find($id);
 
-        $form=$this->createForm(FournisseurType::class,$f);
+        $form = $this->createForm(FournisseurType::class, $f);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $em=$doctrine->getManager();
-            $em->persist($f);
-            $em->flush();
-            return $this->redirectToRoute('afficheF',);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $img = $form->get('img')->getData();
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($img) {
+                $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $img->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $img->move(
+                        $this->getParameter('fournisseur_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $f->setImg($newFilename);
+                $em = $doctrine->getManager();
+                $em->persist($f);
+                $em->flush();
+                return $this->redirectToRoute('afficheF',);
+            }
         }
-        return $this->renderForm('fournisseur/updatef.html.twig',array("f"=>$form));
+            return $this->renderForm('fournisseur/updatef.html.twig', array("f" => $form));
+
     }
 
     #[Route('/detail/{id}', name: 'detailF')]
-    public function detail(FournisseurRepository  $r, $id): Response
+    public function detail(FournisseurRepository  $r, $id,SerializerInterface $serializer): Response
     {
         $f=$r->find($id);
-        return $this->render('fournisseur/detailf.html.twig', [ 'f' => $f,]);
+        $fjson=$serializer->serialize($f, 'json', ['groups' => "suppliers"]);
+        $lien=$f->getWebsite();
+        //$img=$f->getImg();
+        $qrCode=Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($lien)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->labelText($lien)
+            ->labelFont(new NotoSans(20))
+            ->labelAlignment(new LabelAlignmentCenter())
+            //->logoPath('public/uploads/fournisseur/nike-63fe736cba9d1.png')
+            ->build();
+
+        return $this->render('fournisseur/detailf.html.twig', [ 'f' => $f,
+            'qr'=>$qrCode->getDataUri()]);
     }
 
     #[Route('/detailForSeller/{id}', name: 'detailFV')]
-    public function detailV(FournisseurRepository  $r, $id): Response
+    public function detailV(FournisseurRepository $r, $id, SerializerInterface $serializer): Response
     {
         $f=$r->find($id);
-        return $this->render('fournisseur/detailfVendeur.html.twig', [ 'f' => $f,]);
+        $fjson=$serializer->serialize($f, 'json', ['groups' => "suppliers"]);
+        $lien=$f->getWebsite();
+        $qrCode=Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($lien)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->labelText($lien)
+            ->labelFont(new NotoSans(20))
+            ->labelAlignment(new LabelAlignmentCenter())
+            ->build();
+
+        return $this->render('fournisseur/detailfVendeur.html.twig', [ 'f' => $f,
+            'qr'=>$qrCode->getDataUri()]);
     }
 
     #[Route('/SendEmail/{email}', name: 'email')]
