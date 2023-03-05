@@ -29,7 +29,7 @@ class RecTypeJController extends AbstractController
 
 
     
-    #[Route('/afficheRTJ', name: 'afficheRTJ')]
+    #[Route('/afficheRTj', name: 'afficheRTj')]
     public function listCategories(RecTRepository $rectRepository, NormalizerInterface $normalizer): JsonResponse
     {
         $rects = $rectRepository->findAll();
@@ -39,67 +39,41 @@ class RecTypeJController extends AbstractController
     }
 
 
-    #[Route('/afficheJSON', name: 'afficheJSON')]
-public function afficheEC(EventRepository $eventRepository, NormalizerInterface $normalizer): JsonResponse
-{
-    $events = $eventRepository->findBy([], ['Date' => 'ASC']);
-    $eventsNormalized = $normalizer->normalize($events, 'json', ['groups' => 'events']);
-    $json = json_encode($eventsNormalized);
-    return new JsonResponse($json, 200, [], true);
-}
-
-
-#[Route("addJSON/new",name: "addJSON")]
-public function addCategory(Request $req, NormalizerInterface $normalizer)
-{
-$em = $this->getDoctrine()->getManager() ;
-$Category = new Category();
-$titre = $req->get('titre');
-if ($titre !== null) {
-    $Category->setTitre($titre);
-}
-
-$Category ->setTitre($req->get('titre'));
-$Category ->setDescription($req->get('description'));
-
-$em->persist($Category);
-
-$em->flush();
-
-$jsonContent = $normalizer->normalize($Category, 'json', ['groups' => 'Category' ]);
-
-return new Response(json_encode($jsonContent));
-}
-
-
-
-#[Route("/deleteCategoryJSON/{id}", name: "deleteCategoryJSON")]
-public function deleteCategoryJSON(Request $req, $id, NormalizerInterface $normalizer)
-{
-    $em = $this->getDoctrine()->getManager();
-    $Category = $em->getRepository(Category::class)->find($id);
-    $em->remove($Category);
-    $em->flush();
-
-    $jsonContent = $normalizer->normalize($Category, 'json', ['groups' => 'Category']);
-    return new Response("Category deleted successfully " . json_encode($jsonContent));
-}
-
-
-#[Route("updateCategoryJSON/{id}", name: "updateCategoryJSON")]
-public function updateCategoryJSON(Request $req, $id, NormalizerInterface $Normalizer )
-{
-$em = $this->getDoctrine()->getManager() ;
-$Category = $em->getRepository(Category::class)->find($id);
-$Category ->setTitre($req->get('titre'));
-$Category ->setDescription($req->get( 'description' ));
-
-$em->flush();
-
-$jsonContent = $Normalizer->normalize($Category, 'json', ['groups' => 'Category']);
-return new Response("Student updated successfully " . json_encode($jsonContent) ) ;
-
-}
-
+    #[Route('/addRTj', name: 'addRTj')]
+    public function addRJ(Request $req, NormalizerInterface $Normalizer): Response
+    {$em =$this->getDoctrine()->getManager();
+        $rect = new RecT();
+        $rect->setNomT($req->get('nomT'));
+        $em->persist($rect);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($rect, 'json', ['groups' => 'rects']);
+        return new Response(json_encode($jsonContent));
+    
+    
+    
+    }
+    #[Route('/updateRTj/{id}', name: 'updateRTj')]
+    public function updateRJ(Request $req,$id, NormalizerInterface $Normalizer): Response
+    {
+     $em = $this->getDoctrine()->getManager();
+     $rect = $em->getRepository(RecT::class)->find($id);
+     $rect->setNomT($req->get('nomT'));
+     $em->flush();
+    
+        $jsonContent = $Normalizer->normalize($rect, 'json', ['groups' => 'rects']);
+        return new Response(" RecT updated succesfully".json_encode($jsonContent));
+    
+    }
+    #[Route('/deleteRTj/{id}', name: 'deleteRj')]
+    public function deleteRJ(Request $req, $id, NormalizerInterface $Normalizer): Response
+    {    $em = $this->getDoctrine()->getManager();
+        $rect = $em->getRepository(RecT::class)->find($id);
+        $em->remove($rect);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($rect, 'json', ['groups' => 'rects']);
+        return new Response(" RecT deleted succesfully".json_encode($jsonContent));
+    
+    
+    }
 
 }

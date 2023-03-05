@@ -1,38 +1,120 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/my-tickets.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h3>My Tickets</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Subject</th>
-                <th>Content</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ticket in tickets %}
+    <div class="container">
+        <h1 class="page-title">My Tickets</h1>
+        <table class="tickets-table">
+            <thead>
                 <tr>
-                    <td>{{ ticket.sujet }}</td>
-                    <td>{{ ticket.contenu }}</td>
-                    <td>{{ ticket.etat }}</td>
-                    <td><a href="{{ path('updateRH', {'id': ticket.id}) }}">View</a></td>
+                    <th class="subject-col">Subject</th>
+                    <th class="content-col">Content</th>
+                    <th class="status-col">Status</th>
+                    <th class="actions-col">Actions</th>
                 </tr>
-                {% if ticket.etat == 'Solved' and app.user.email == ticket.email %}
-                    <div id="flash-message-{{ ticket.id }}" class="alert alert-success alert-dismissible fade show" role="alert">
-                        Your ticket "{{ ticket.sujet }}" is solved.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <script>
-                        setTimeout(function() {
-                            $('#flash-message-{{ ticket.id }}').fadeOut('slow');
-                        }, 5000);
-                    </script>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                        <td>{{ ticket.sujet }}</td>
+                        <td>{{ ticket.contenu }}</td>
+                        <td class="{{ ticket.etat|lower }}">{{ ticket.etat }}</td>
+                        <td><a href="{{ path('updateRH', {'id': ticket.id}) }}" class="view-link">View</a></td>
+                    </tr>
+                    {% if ticket.etat == 'Solved' and app.user.email == ticket.email %}
+                        
+                           
+                                <div id="flash-message-{{ ticket.id }}" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Your ticket "{{ ticket.sujet }}" is solved.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            
+                        
+                        <script>
+                            setTimeout(function() {
+                                $('#flash-message-{{ ticket.id }}').fadeOut('slow');
+                            }, 5000);
+                        </script>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+    .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    margin-top: 0;
+}
+
+.tickets-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.tickets-table th,
+.tickets-table td {
+    text-align: left;
+    padding: 10px;
+}
+
+.subject-col {
+    width: 25%;
+}
+
+.content-col {
+    width: 50%;
+}
+
+.status-col {
+    width: 15%;
+}
+
+.actions-col {
+    width: 10%;
+}
+
+.odd {
+    background-color: #f9f9f9;
+}
+
+.even {
+    background-color: #fff;
+}
+
+.status-col.pending {
+    color: orange;
+}
+
+.status-col.solved {
+    color: green;
+}
+
+.view-link {
+    text-decoration: none;
+    color: blue;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    margin-bottom: 0;
+}
+
+.alert button.close {
+    outline: none;
+}
+</style>
 {% endblock %}

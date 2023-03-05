@@ -22,8 +22,8 @@ class RecJController extends AbstractController
             'controller_name' => 'RecJController',
         ]);
     }
-    #[Route('/afficheRJ', name: 'afficheRJ')]
-    public function afficheRJ(RecRepository $repo, NormalizerInterface $normalizer)
+    #[Route('/afficheRj', name: 'afficheRj')]
+    public function afficheRJ(RecTRepository $repo, NormalizerInterface $normalizer)
     {
         $recs= $repo->findAll();
         $recsNormalises = $normalizer->normalize($recs, 'json');
