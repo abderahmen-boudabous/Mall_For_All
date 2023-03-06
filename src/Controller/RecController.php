@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RecRepository;
@@ -50,28 +52,54 @@ class RecController extends AbstractController
                     ]);
      }
      #[Route('/addR', name: 'addR')]
-     public function addR(ManagerRegistry $doctrine, Request $request): Response
+     public function addR(ManagerRegistry $doctrine, Request $request, HttpClientInterface $httpClient): Response
      {
          $user = $this->getUser();
          $rec = new Rec();
          $rec->setEmail($user->getUsername());
          $rec->setUserR($user->getNom()); // set the current user as the userR value
-         
+     
          $form = $this->createForm(RecType::class, $rec);
          $form->handleRequest($request);
-         
+     
          if ($form->isSubmitted() && $form->isValid()) {
              $entityManager = $doctrine->getManager();
              $entityManager->persist($rec);
-             $entityManager->flush();
      
-             return $this->redirectToRoute('home');
+             $content = $rec->getContenu();
+             $response = $httpClient->request('GET', 'https://neutrinoapi.net/bad-word-filter', [
+                 'query' => [
+                     'content' => $content
+                 ],
+                 'headers' => [
+                     'User-ID' => '007007',
+                     'API-Key' => 'SDP4TUoFlxnmnSHz6kTHBD33OOwgMOO4aWwiE1eaL9MiQ6Aw',
+                 ]
+             ]);
+     
+             if ($response->getStatusCode() === 200) {
+                 $result = $response->toArray();
+                 if ($result['is-bad']) {
+                     // Handle bad word found
+                     $this->addFlash('danger', 'Your comment contains inappropriate language and cannot be posted.');
+                     return $this->redirectToRoute('addR');
+                 } else {
+                     // No bad words found, proceed to save
+                     $entityManager->flush();
+                     $this->addFlash('success', 'Your comment has been posted.');
+                     return $this->redirectToRoute('mytickets');
+                 }
+             } else {
+                 // Handle API error
+                 return new Response("Error processing request", Response::HTTP_INTERNAL_SERVER_ERROR);
+             }
          }
      
          return $this->render('home/addR.html.twig', [
              'f' => $form->createView(),
          ]);
      }
+     
                      #[Route('/updateR/{id}', name: 'updateR')]
                      public function updateR(Request $request, $id, Security $security, SessionInterface $session)
 {
