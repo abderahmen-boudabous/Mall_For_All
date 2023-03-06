@@ -15,14 +15,31 @@
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/elegant-icons.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/nice-select.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/elegant-icons.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/nice-select.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css') }}" type="text/css">
+
     <link rel="stylesheet" href="{{ asset('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css') }}">
+
+{% block stylesheets %}
+ 
+  <style>
+    
+    .filter{
+        display: block;
+        position: sticky;
+        top: 20px;
+
+    }
+  </style>
+{% endblock %}
+
+
 </head>
 
 <body>

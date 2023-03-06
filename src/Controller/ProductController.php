@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 
+use App\Data\SearchData;
 use App\Entity\PriceSearch;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\ProductType;
 use App\Form\UpdatePType;
+use App\Form\SearchForm;
 use App\Form\PriceSearchType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CommentFormType;
@@ -26,6 +28,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 
+/**
+ * Summary of ProductController
+ */
 class ProductController extends AbstractController
 {
 
@@ -44,16 +49,30 @@ class ProductController extends AbstractController
       }
 
       #[Route('/afficheP/{page?1}/{nbre?6}', name: 'afficheP')]
-     public function afficheP(ProductRepository $product,ManagerRegistry $doctrine,$nbre,$page): Response
-                 {
-                     $repository = $doctrine->getRepository(Product::class);
-                     $a=$product->findBy([],[],$nbre,($page -1) * $nbre);
-                     $nbproducts = $repository->count([]);
-                     $nbrePage = ceil($nbproducts / $nbre);
+public function afficheP(ProductRepository $productRepository, ManagerRegistry $doctrine, $nbre, $page, Request $request): Response
+{
+    $data = new SearchData();
+    $form = $this->createForm(SearchForm::class, $data);
+    $form->handleRequest($request);
 
-                     return $this->render('product/listp.html.twig', [
-                     'products' => $a,'product'=>$product, 'isPaginated'=> true,'nbrePage'=>$nbrePage,'page'=>$page, 'nbre'=>$nbre,]);
-                 }
+    $products = $productRepository->findsearch($data);
+    $nbProducts = count($products);
+    $nbrePage = ceil($nbProducts / $nbre);
+
+    // Apply pagination
+    $products = array_slice($products, ($page - 1) * $nbre, $nbre);
+
+    return $this->render('product/listp.html.twig', [
+        'products' => $products,
+        'productRepository' => $productRepository,
+        'isPaginated' => true,
+        'nbrePage' => $nbrePage,
+        'page' => $page,
+        'nbre' => $nbre,
+        'form' => $form->createView()
+    ]);
+}
+
       
       #[Route('/affichePP', name: 'affichePP')]
       public function addS(Request $request,ManagerRegistry $doctrine,SluggerInterface $slugger): Response
@@ -194,26 +213,15 @@ class ProductController extends AbstractController
        array("formc"=>$formc));
           }
           
-          #[Route('/art_prix', name: 'article_par_prix', methods: ['GET', 'POST'])]
-public function articlesParPrix(Request $request, ManagerRegistry $doctrine)
-{
-    $priceSearch = new PriceSearch();
-    $form = $this->createForm(PriceSearchType::class, $priceSearch);
-    $form->handleRequest($request);
-    $Product = [];
+          
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $minPrice = $priceSearch->getMinPrice();
-        $maxPrice = $priceSearch->getMaxPrice();
-        
-        $Product = $doctrine->getRepository(Product::class)->findByPriceRange($minPrice, $maxPrice);
-    }
 
-    return $this->render('product/articlesParPrix.html.twig', [
-        'form' => $form->createView(),
-        'product' => $Product,
-    ]);
-}
+
+
+
+
+
+
 }
                     
 

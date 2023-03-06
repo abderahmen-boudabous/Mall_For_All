@@ -53,6 +53,45 @@ class ProductRepository extends ServiceEntityRepository
     ;
 }
 
+public function findSearch(SearchData $search): array
+{
+    $query= $this->createQueryBuilder('p')
+        ->select('c', 'p')
+        ->join('p.shop', 'c');
+
+    if(!empty($search->q)){
+        $query = $query
+            ->andWhere('p.name LIKE :q')
+            ->setParameter('q', "%{$search->q}%");
+    }
+    if(!empty($search->min)){
+        $query = $query
+            ->andWhere('p.price >= :min')
+            ->setParameter('min', $search->min);
+    }
+    if(!empty($search->max)){
+        $query = $query
+            ->andWhere('p.price <= :max')
+            ->setParameter('max', $search->max);
+    }
+    if(!empty($search->stock)){
+        $query = $query
+            ->andWhere('p.stock != 0');          
+    }
+    if(!empty($search->shop)){
+        $query = $query
+            ->andWhere('c.id IN (:shop)')
+            ->setParameter('shop', $search->shop);
+    }
+    
+
+    return $query->getQuery()->getResult();
+}
+
+
+
+    
+
 
 //    /**
 //     * @return Product[] Returns an array of Product objects
@@ -78,6 +117,8 @@ class ProductRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    
 
 
 }

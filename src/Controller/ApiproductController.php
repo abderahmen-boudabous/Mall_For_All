@@ -11,7 +11,7 @@ use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Entity\Shop;
+
 
 
 class ApiproductController extends AbstractController
