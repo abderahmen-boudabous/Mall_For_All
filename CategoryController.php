@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Form\CategoryFormType;
 use App\Form\UpdateCategoryFormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 
@@ -113,10 +114,35 @@ class CategoryController extends AbstractController
                                         'form' => $form->createView(),
                                     ]);
                                 }
-
-
-                                
-
+                            
+                               
+                           
+                            
+                            #[Route("AllCategoryJSON", name: "AllCategoryJSON")]
+                            public function AllArticleJSON(NormalizerInterface $Normalizer, CategoryRepository $articlerepo)
+                            {
+                                $repository= $this->getDoctrine()->getRepository(Category::class);
+                                $Category = $articlerepo->findAll();
+                                $jsonContent = $Normalizer->normalize($Category,'json',['groups'=>'post:read']);
+                                return new Response(json_encode($jsonContent));
+                            }  
+                            #[Route("AddCategoryJSON", name: "AddCategoryJSON")]
+                            public function AddCategoryJSON(Request $request, NormalizerInterface $normalizer)
+                            {
+                                $entityManager= $this->getDoctrine()->getManager();
+                            
+                                $Category = new Category();
+                                $Category->setTitre($request->get('titre'));
+                                $Category->setDescription($request->get('description'));
+                            
+                              
+                                $entityManager->persist($Category);
+                                $entityManager->flush();
+                            
+                                $jsonContent = $normalizer->normalize($Category,'json',['groups'=>'post:read']);
+                                    return new Response(json_encode($jsonContent));
+                            }
+                            
 
 
 }

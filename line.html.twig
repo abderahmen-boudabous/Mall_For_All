@@ -1,0 +1,121 @@
+<style>
+    .events-line {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+        border-bottom: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    .events-line h4 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+    }
+
+    .events-line ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        animation: slide 20s linear infinite;
+    }
+
+    .events-line li {
+        margin-right: 30px;
+        transform: translateX(0%);
+        animation: slide 20s linear infinite;
+        font-size: 15px;
+        color: #1E90FF;
+        line-height: 1em;
+    }
+
+    .events-line a {
+        color: #1E90FF;
+        text-decoration: none;
+    }
+
+    @keyframes slide {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-90%);
+        }
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+
+    .event-details {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        z-index: 10000;
+    }
+
+    .event-details h2 {
+        margin-top: 0;
+        color: #1E90FF;
+    }
+
+    .event-details p {
+        margin-bottom: 0;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+    }
+</style>
+
+<div class="events-line">
+    <h4>Available Events</h4>
+    <ul>
+        {% for i in events %}
+            <li><a href="{{ path('details', { 'id': i.id }) }}">{{ i.Nom }} </a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var eventList = $('.events-line ul');
+        var listItem = eventList.children('li');
+        var listLength = listItem.length;
+        var i = 0;
+        setInterval(function() {
+            listItem.eq(i).fadeOut(400, function(){
+                i = (i + 1) % listLength;
+                eventList.append($(this).fadeIn(400));
+            });
+        }, 3000);
+
+        $('.events-line li a').click(function(event) {
+            event.preventDefault();
+            var eventId = $(this).attr('href').split('/').pop();
+            var eventUrl = '/event_details/' + eventId;
+            $.get(eventUrl, function(data) {
+                var eventDetails = $(data).find('.event-details');
+                $('body').append('<div class="overlay"></div>').append(eventDetails);
+                eventDetails.show('fast');
+            });
+        });
+    });
+</script>

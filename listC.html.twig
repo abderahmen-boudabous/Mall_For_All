@@ -1,0 +1,60 @@
+{% extends 'base2.html.twig' %}
+
+{% block body %}
+
+
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="alert alert-success">{{ flashMessage }}</div>
+{% endfor %}
+
+
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Tableau des Category</h6>
+              
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in categorys %}
+                        <tr>
+                            
+                            
+                            <td>{{ i.titre }}</td>
+                            <td>{{ i.description }}</td>
+                                  <td>
+<a class="btn btn-danger" href="{{ path('confirm_delete', {'id': i.id}) }}">Delete</a>
+                                    </td>
+                                        <td>
+                                        <form method="post" action="{{ path('updateC', {'id': i.id}) }}">
+                                        <input type="hidden" name="_method" value="UPDATE">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('Update') }}">
+                                        </form>
+                                    </td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+
+                                        <br></br><br></br>
+                                        <form method="post" action="{{ path('addC') }}">
+                                        <input type="hidden" name="_method" value="AJOUTER">
+                                        <button type="submit" class="btn btn-success">Ajouter une catégorie</button>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('Ajouter') }}">
+                                        </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base2.html.twig' %}
+
+{% block body %}
+    <form method="post" action="{{ path('deleteC', {'id': category.id}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('deleteC' ~ category.id) }}">
+        <h1>Are you sure you want to delete {{ category.titre }}</h1>
+        {% if category.event %}
+            <h2>The following Events are using this category and they will be deleted </h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in category.event %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.titre }}</td>
+                            <td>{{ category.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <a class="btn btn-primary" href="{{ path('afficheC') }}">No</a>
+    </form>
+    
+{% endblock %}

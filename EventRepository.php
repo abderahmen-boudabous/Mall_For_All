@@ -39,6 +39,32 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
+    public function findLiveEvents(): array
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where('e.Date = :today')
+        ->setParameter('today', new \DateTime('today'));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findPlanBySujet($value)
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.Nom LIKE :sujet or v.Spot LIKE :sujet  or v.Duration Like :sujet   ')
+            ->setParameter('sujet', '%'.$value.'%')
+            ->getQuery()
+            ->getResult();
+        ;
+    }
+    public function order_By_Nom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.Nom', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */

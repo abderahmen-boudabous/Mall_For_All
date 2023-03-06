@@ -1,0 +1,89 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Add Event{% endblock %}
+
+{% block body %}
+<div class="container-fluid pt-4 px-4">
+  <div class="bg-light text-center rounded p-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h6 class="mb-0">Ajouter Event</h6>
+    </div>
+
+     <div class="form-container">
+      {{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+
+      <div class="form-group">
+        {{ form_label(f.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.category, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(f.category) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(f.Nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.Nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(f.Nom) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(f.Spot, 'Spot', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.Spot, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(f.Spot) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(f.Duration, 'Duration', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.Duration, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(f.Duration) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(f.Date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.Date, {'attr': {'class': 'form-control', 'placeholder': 'JJ/MM/AAAA'}}) }}
+        {{ form_errors(f.Date) }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Ajouter</button>
+
+      {{ form_end(f, {'attr': {'novalidate': 'novalidate'}}) }}
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-group {
+    width: 80%;
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .btn {
+    width: 80%;
+    margin-top: 1rem;
+  }
+</style>
+
+{% endblock %}

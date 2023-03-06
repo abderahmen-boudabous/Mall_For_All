@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
+use App\Entity\Category;
 use App\Entity\ParticipantsEvent;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ParticipantsEventRepository;
@@ -27,10 +28,11 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+use DateTime;
 use App\Entity\Participants;
 use App\Form\ParticiperType;
-
 
 
 
@@ -44,18 +46,6 @@ class EventController extends AbstractController
         return $this->render('event/index.html.twig', [
             'controller_name' => 'EventController',
         ]);
-
-        // public function test(ManagerRegistry $doctrine,Request $request)
-        // {$s= new Event();
-        //     $form=$this->createForm(EventFormType::class,$s);
-        //     $form->handleRequest($request);
-        //     if($form->isSubmitted() && $form->isValid()){
-        //         $em =$doctrine->getManager() ;
-        //         $em->persist($s);
-        //         $em->flush();
-        //         return $this->redirectToRoute("afficheEC");}
-        //         return $this->renderForm("event_details.html.twig", array("f"=>$form));
-        // }
     }
 
     // #[Route('/afficheE', name: 'afficheE')]
@@ -136,14 +126,8 @@ public function afficheEC(EventRepository $event, EntityManagerInterface $entity
         
             $eventName = $event->getNom();
             
-            $user = $security->getUser();
-            if ($user && $rec->getEmail() === $user->getEmail()) {
-                // Add a flash message to notify the user that their ticket has been solved
-                $session->getFlashBag()->add('success', [
-                    'message' => 'Event has been cancelled :c ',
-                    'dismissable' => true,
-                ]);       }
-            // $session->getFlashBag()->add('success', $eventName . ' Event has been deleted.');
+        
+            $session->getFlashBag()->add('success', $eventName . 'Event has been deleted.');
         
             return $this->redirectToRoute('afficheEC');
         }
@@ -180,39 +164,37 @@ public function afficheEC(EventRepository $event, EntityManagerInterface $entity
               
                                  
                                  
-                                /**
-                                 * @Route("/event/{id}", name="event_details")
-                                 */
-                                public function details($id, Request $request)
-                                {
-                                    $s = new Participants();
-                                    $user = $this->getUser();
-                                    $s->setParticipantId($user->getId());
-                                    $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
-                                    $s->setEventId($event->getId());
-                                    $form = $this->createForm(ParticiperType::class, $s);
-                                    $form->handleRequest($request);
-                                
-                                    if ($form->isSubmitted() && $form->isValid()) {
-                                        $em = $this->getDoctrine()->getManager();
-                                        $em->persist($s);
-                                        $em->flush();
-                                
-                                        // retrieve the event data from the database based on the given ID
-                                        
-                                
-                                        // render the event details template with the event data
-                                        return $this->redirectToRoute("afficheEC");
-                                    }
-                                
-                                    // if the form is not submitted or is not valid, render the form and event details template
-                                    $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
-                                    return $this->render('event_details.html.twig', [
-                                        'event' => $event,
-                                        'f' => $form->createView(),
-                                    ]);
-                                }
-                                
+                                 public function details($id, Request $request)
+                                 {
+                                     $s = new Participants();
+                                     $user = $this->getUser();
+                                     $s->setParticipantId($user->getId());
+                                     $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+                                     $s->setEventId($event->getId());
+                                     $form = $this->createForm(ParticiperType::class, $s);
+                                     $form->handleRequest($request);
+                                 
+                                     if ($form->isSubmitted() && $form->isValid()) {
+                                         $em = $this->getDoctrine()->getManager();
+                                         $em->persist($s);
+                                         $em->flush();
+                                 
+                                         // retrieve the event data from the database based on the given ID
+                                         
+                                 
+                                         // render the event details template with the event data
+                                         return $this->redirectToRoute("afficheEC");
+                                     }
+                                 
+                                     // if the form is not submitted or is not valid, render the form and event details template
+                                     $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+                                     return $this->render('event_details.html.twig', [
+                                         'event' => $event,
+                                         'f' => $form->createView(),
+                                     ]);
+                                 }
+
+
 
 
 /**
@@ -250,8 +232,6 @@ public function participate(Request $request, $id)
     }
 }
 
-
-
 /**
  * @Route("/event/{id}/unparticipate", name="event_unparticipate")
  */
@@ -280,60 +260,9 @@ public function unparticipate(Request $request, $id)
             'new_spot_value' => $newSpotValue
         ]);
     }
+
+
 }
-
-
-
-
-                        /**
-                         * @Route("/event/{id}/test", name="event_test")
-                         */
-                        // public function test(Request $request, $id)
-                        // {
-                        //     $entityManager = $this->getDoctrine()->getManager();
-
-                        //     $event = $entityManager->getRepository(Event::class)->find($id);
-
-                        //     if (!$event) {
-                        //         throw $this->createNotFoundException(
-                        //             'No event found for id '.$id
-                        //         );
-                        //     }
-
-                        //     // Create a new participant object and set its properties
-                        //     $participant = new Participants();
-                        //     $participant->setParticipantId($this->getUser()->getId());
-                        //     $participant->setEventId($event->getId());
-
-                        //     // Persist the participant object to the database
-                        //     $entityManager->persist($participant);
-                        //     $entityManager->flush();
-
-                        //     return $this->json([
-                        //         'success' => true
-                        //     ]);
-                        // }
-
-
-                        // #[Route('/addE', name: 'addE')]
-                        
-                        // #[Route('/test/{id}', name:'test')]
-                    //     public function test(ManagerRegistry $doctrine,Request $request)
-                    //     {$s= new Event();
-                    //         $user = $this->getUser();
-                    //         $s->setParticipantId($user->getId());    
-                    //         $form=$this->createForm(EventFormType::class,$s);
-                    //         $form->handleRequest($request);
-                    //         if($form->isSubmitted() && $form->isValid()){
-       
-                    //             $em =$doctrine->getManager() ;
-                    //             $em->persist($s);
-                    //             $em->flush();
-                    //             return $this->redirectToRoute("afficheEC");}
-
-                    //             ]);
-                    //    }
-
 
 
 

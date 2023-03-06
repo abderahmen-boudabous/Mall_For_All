@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 
@@ -21,9 +22,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("post:read")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("post:read")]
     #[Assert\Type('alpha',message:"Titre must contain letters only")]
     #[Assert\NotBlank(message:"titre cannot be empty")]
     #[Assert\Length(min: 3)]
@@ -32,6 +35,7 @@ class Category
 
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups("post:read")]
     #[Assert\Type(type: 'string', message: 'Description must be a string')]
     #[Assert\NotBlank(message: 'Description cannot be empty')]
     #[Assert\Length(max: 255)]

@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Serializer\Annotation\Groups;
+use DateTime;
 
 
 
@@ -21,10 +23,11 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("post:read")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-
+    #[Groups("post:read")]
     #[Assert\NotBlank(message:"Nom cannot be empty")]
     #[Regex(pattern: '/^[a-zA-Z0-9\sé,.]*$/', message: ' text ')]
     #[Regex(pattern: '/^[a-zA-Z\sé,.]*$/', message: 'Nom can contain letters and spaces only')]
@@ -34,11 +37,13 @@ class Event
     private ?string $Nom = null;
 
     #[ORM\Column]
+    #[Groups("post:read")]
     #[Assert\Positive]
     #[Assert\NotBlank(message:"Spot cannot be empty")]
     private ?int $Spot = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("post:read")]
     #[Assert\NotBlank(message:"Duration cannot be empty")]
     #[Assert\Length(min: 4)]
     #[Assert\Length(max: 20)]
@@ -49,8 +54,14 @@ class Event
     private ?Category $category = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\GreaterThan("today", message: "The date must be in the future")]
-    private ?\DateTimeInterface $Date = null;
+    #[Groups("post:read")]
+    // #[Assert\GreaterThan("today", message: "The date must be in the future")]
+    // #[Assert\GreaterThan(
+    //     value: new \DateTime(),
+    //     message: 'The date must be in the future'
+    // )]
+    
+    private ?\DateTime $Date = null;
 
     public function getId(): ?int
     {
@@ -105,15 +116,23 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTime
     {
         return $this->Date;
     }
 
-    public function setDate(\DateTimeInterface $Date): self
+    public function setDate(\DateTime $Date): self
     {
         $this->Date = $Date;
 
         return $this;
     }
+
+    public function isLive(): bool
+    {
+        $now = new DateTime();
+        return $this->Date->format('Y-m-d') === $now->format('Y-m-d');
+    }
 }
+
+

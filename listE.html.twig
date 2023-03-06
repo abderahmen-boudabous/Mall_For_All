@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# {% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="alert alert-success">{{ flashMessage }}</div>
+{% endfor %}
+ #}
+
+
+
+{% include 'line.html.twig' with { 'events': events } %}
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Salse</h6>
+                        <a href="">Show All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-dark">
+                                    
+                                    
+                                    <th scope="col">catégorie</th>
+                                    <th scope="col">Nom de l'événement </th>
+                                    <th scope="col">Place disponible </th>
+                                    <th scope="col">Durée de l'événement </th>
+                                    <th scope="col">Date de l'événement</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                                {% for i in events %}
+                                                  <tr>
+                                                    
+                                                    <td>{{    i.category.titre       }} </td>
+                                                    <td>{{    i.Nom        }} </td>
+                                                    <td>{{    i.Spot        }} </td>
+                                                    <td>{{    i.Duration    }}</td>
+                                                    <td>{{    i.Date|date('Y-m-d')        }}</td>
+                                                  </tr>
+                                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+<br><br><br><br><br><br>
+
+
+
+{% endblock %}
+

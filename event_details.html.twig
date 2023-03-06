@@ -31,7 +31,25 @@
         padding: 10px;
         cursor: pointer;
     }
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 </style>
+
+<img src="{{ asset('img/event.png') }}" alt="My Image" style="border: none;">
+
+
 
 
 {# <td> {{app.user.id}}</td> #}
@@ -74,7 +92,7 @@
 <button> Return to Event List </button>
 </a>
 <br><br>
-{{form(f)}}
+{{form(f)}} 
 
 
 

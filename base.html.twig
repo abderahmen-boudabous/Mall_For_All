@@ -24,6 +24,12 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
 </head>
 
+
+
+
+
+
+
 <body>
 <!-- Page Preloder -->
 <div id="preloder">
@@ -31,6 +37,7 @@
 </div>
 
 <!-- Offcanvas Menu Begin -->
+{% block menu %}
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
@@ -59,15 +66,17 @@
     </div>
 </div>
 <!-- Offcanvas Menu End -->
+{% endblock %}
 
 <!-- Header Section Begin -->
+{% block header  %}
 <header class="header">
     <div class="header__top">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-7">
                     <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                        <p>Free shipping, 7-day return or refund guarantee.</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
@@ -89,6 +98,7 @@
             </div>
         </div>
     </div>
+    
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-3">
@@ -99,7 +109,8 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./home">Home</a></li>
+                    <li><a href="{{ path('user_profile') }}">My Profile</a>
+                        <li class="active"><a href="{{ path('user_user') }}">Home</a></li>
                         <li><a href="./shop.html">Shop</a></li>
                         <li><a href="./afficheE">Event</a>
                         </li>
@@ -117,30 +128,60 @@
                 </div>
             </div>
         </div>
+       
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
 <!-- Header Section End -->
+
 {% for flashMessage in app.session.flashbag.get('success') %}
-    <div class="alert alert-success">{{ flashMessage }}</div>
+    <div class="alert alert-danger">{{ flashMessage }}</div>
 {% endfor %}
 
 
-{% block body %}
+{% endblock  %}
 
 
+
+
+
+
+
+
+{% block body %} 
 <!-- Hero Section Begin -->
+
+
+{% if liveEvents is not empty %}
+    <div class="alert alert-success">
+        <h4>Live Events :</h4>
+        <ul>
+            {% for event in liveEvents %}
+                <li>{{ event.Nom }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+
+
+
 <section class="hero">
     <div class="hero__slider owl-carousel">
+   
         <div class="hero__items set-bg" data-setbg="{{ asset('img/hero/hero-1.jpg') }}">
+        
             <div class="container">
                 <div class="row">
                     <div class="col-xl-5 col-lg-7 col-md-8">
+                  
                         <div class="hero__text">
                             <h6>Summer Collection</h6>
                             <h2>Fall - Winter Collections 2023</h2>
                             <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering commitment to exceptional quality.</p>
                             <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                          
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -151,7 +192,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
+      
+        
+
         <div class="hero__items set-bg" data-setbg="{{ asset('img/hero/hero-2.jpg') }}">
             <div class="container">
                 <div class="row">
@@ -176,8 +221,6 @@
     </div>
 </section>
 <!-- Hero Section End -->
-
-
 
 <!-- Banner Section Begin -->
 <section class="banner spad">
@@ -642,10 +685,11 @@
         </div>
     </div>
 </section>
-<!-- Latest Blog Section End -->        
-                                                            {% endblock %}
+<!-- Latest Blog Section End -->
+{% endblock %}
 
 <!-- Footer Section Begin -->
+{% block footer %}
 <footer class="footer">
     <div class="container">
         <div class="row">
@@ -711,6 +755,7 @@
     </div>
 </footer>
 <!-- Footer Section End -->
+{% endblock  %}
 
 <!-- Search Begin -->
 <div class="search-model">
@@ -736,7 +781,5 @@
 <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
+
 </html>
-
-
-
