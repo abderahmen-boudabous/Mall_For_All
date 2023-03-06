@@ -26,11 +26,13 @@ class CategorieFController extends AbstractController
     }
 
     #[Route('/Categories', name: 'afficheCF')]
-    public function afficheCF(CategorieFRepository $r): Response
+    public function afficheCF(CategorieFRepository $r, FournisseurRepository $fr): Response
     {
         $cf=$r->findAll();
+       // $catByFor=$fr->getCatByFor();
         return $this->render('categorie_f/categorief.html.twig', [
             'categories' => $cf,
+            //'catByFor' => $catByFor
         ]);
     }
 
@@ -87,6 +89,19 @@ class CategorieFController extends AbstractController
         }
         return $this->renderForm('categorie_f/updateC.html.twig',array("f"=>$form));
     }
+
+    #[Route('/Statestics', name: 'Statestics')]
+    public function Statestics(CategorieFRepository $r, FournisseurRepository $fr): Response
+    {
+
+        $cf=$r->getCat();
+        $catByFor=$r->getCatByFor();
+        return $this->render('categorie_f/stats.html.twig', [
+            'categories' => $cf,
+            'catByFor' => $catByFor
+        ]);
+    }
+
 
     //-------------------------------CRUD pour sprint mobile (utilistation de JSON )----------------------------------------
 

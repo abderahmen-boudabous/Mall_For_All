@@ -8,7 +8,7 @@
     <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
-                <h6 class="mb-0">List of categories</h6>
+                <h6 class="mb-0">List of categories </h6>
                 <a href="{{ path('addCF') }}">Add new Categorie</a>
             </div>
             <div class="table-responsive">
@@ -18,7 +18,7 @@
                         <th scope="col"></th>
                         <th scope="col"> id </th>
                         <th scope="col"> Category </th>
-                        <th scope="col"> Total Suppliers </th>
+                        {#<th scope="col"> Total Suppliers </th>#}
                         <th scope="col"> supprimer </th>
                         <th scope="col"> update </th>
                     </tr>
@@ -29,15 +29,24 @@
                             <th scope="col"><input class="form-check-input" type="checkbox"></th>
                             <td> {{ i.id }}</td>
                             <td>{{ i.libelle}} </td>
-                            <td> </td>
-                            <td><a class="btn btn-sm btn-primary" href="{{ path('suppCF', { 'id':i.id }) }}">Supprimer</a></td>
+                            {#<td>
+                                {% if  catByFor[i.id] is defined %}
+                                    {{ catByFor[i.id] }}
+                                {% else %}
+                                    {{ 0 }}
+                                {% endif %}
+                            </td>#}
+                            <td><a class="btn btn-sm btn-primary" href="{{ path('suppCF', { 'id':i.id }) }}">Delete</a></td>
                             <td><a class="btn btn-sm btn-primary" href="{{ path('updateCF', { 'id':i.id }) }}">Update</a></td>
-
-
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+                <br>
+                <a class="btn btn-sm btn-primary" href="{{ path('Statestics') }}">See Statistics</a>
+{#
+                <h3> TOTAL CATEGORIES {{ categories|length }}</h3>
+#}
             </div>
         </div>
     </div>

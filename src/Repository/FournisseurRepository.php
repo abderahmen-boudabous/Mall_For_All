@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CategorieF;
 use App\Entity\Fournisseur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -53,6 +54,23 @@ class FournisseurRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+/*    public function getCatByFor()
+    {
+        $q = $this->createQueryBuilder('f')
+            ->select('c.id, COUNT(f.categorie.id)')
+            ->leftJoin('f.categorie', 'c')
+            ->groupBy('c.id')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $tab = [];
+        foreach($q as $qq) {
+            $tab[$qq['id']] = $qq[1];
+        }
+        return $tab;
+    }*/
 //    /**
 //     * @return Fournisseur[] Returns an array of Fournisseur objects
 //     */

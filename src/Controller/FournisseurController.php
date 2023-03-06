@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CategorieF;
 use App\Entity\Fournisseur;
 use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
@@ -163,7 +164,7 @@ class FournisseurController extends AbstractController
         $qrCode=Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
-            ->data($lien)
+            ->data($fjson)
             ->encoding(new Encoding('UTF-8'))
             ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
             ->size(300)
@@ -235,11 +236,11 @@ class FournisseurController extends AbstractController
     }
 
     #[Route("AddSupplier/new", name: "AddSupplier")]
-    public function AddSupplier(Request $req,   NormalizerInterface $Normalizer, SluggerInterface $slugger)
+    public function AddSupplier(Request $req,   NormalizerInterface $Normalizer, SluggerInterface $slugger, SerializerInterface $serializer)
     {
 
-        $em = $this->getDoctrine()->getManager();
-        $supplier = new Fournisseur();
+        $em = $this->getDoctrine()->getManager();/*dd($req->request->getContent());*/
+        $supplier = new Fournisseur();/*dd($serializer->deserialize($req->getContent(), Fournisseur::class, 'json'));*/
         $supplier->setnom($req->get('nom'));
         $supplier->setCategorie(($req->get('categorie')));
         $supplier->setTel($req->get('tel'));

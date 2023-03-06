@@ -1,0 +1,45 @@
+{% extends 'base1.html.twig' %}
+{% block table%}
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="table-responsive">
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        categories = "{{categories|join('|')}}".split('|')
+        catByFor = "{{catByFor|join('|')}}".split('|')
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:  categories ,
+                datasets: [{
+                    label: 'number of suppliers in each category',
+                    data: catByFor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+
+

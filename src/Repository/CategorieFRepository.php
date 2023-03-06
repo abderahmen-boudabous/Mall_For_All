@@ -39,6 +39,52 @@ class CategorieFRepository extends ServiceEntityRepository
         }
     }
 
+    public function getCat()
+    {
+        $q = $this->createQueryBuilder('f')
+            ->select('f.id, f.libelle')
+            ->orderBy('f.id', 'ASC')
+            //->leftJoin('f.categorie', 'c')
+            //->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+        $tab = [];
+        foreach($q as $qq) {
+            $tab[$qq['id']] = $qq['libelle'];
+        }
+        return $tab;
+    }
+
+    public function getIds()
+    {
+        $q = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+        foreach($q as $qq) {
+            $tab[] = $qq['id'];
+        }
+        return $q;
+    }
+
+    public function getCatByFor()
+    {
+        $q = $this->createQueryBuilder('c')
+            ->select('c.id, COUNT(f.id)')
+            ->leftJoin('c.fournisseurs', 'f')
+            ->groupBy('c.id')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $tab = [];
+        foreach($q as $qq) {
+            $tab[$qq['id']] = $qq[1];
+        }
+        return $tab;
+    }
+
 //    /**
 //     * @return CategorieF[] Returns an array of CategorieF objects
 //     */
