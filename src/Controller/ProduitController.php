@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Entity\Favori;
+use App\Entity\Panier;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,6 +54,37 @@ class ProduitController extends AbstractController
 
         return $this->redirectToRoute('produit_index');
     }
+
+
+    #[Route('/addpanier/{id}/panier', name: 'produit_panier')]
+    public function addpanier(Produit $produit, Request $request): Response
+    {
+        $panier = new Panier();
+       
+        $panier->setProduit($produit);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($panier);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('produit_index');
+    }
+    #[Route('/panier', name: 'panier')]
+    public function Panier(Produit $produit, Request $request): Response
+    {
+        $panier  = new Panier();
+       
+        $panier->setProduit($produit);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($panier);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('produit_index');
+    }
+
+
+
    
 
 }

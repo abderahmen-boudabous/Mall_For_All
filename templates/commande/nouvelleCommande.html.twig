@@ -3,26 +3,43 @@
 
 {% block body %}
 
-    <h1 class="text-secondary text-center container-fluid pt-4 px-4">New Command</h1>
+     <h1 class="text-center container-fluid pt-4 px-4">New Command</h1>
 
    {# {{ form_start(form,{'att':{'novalidate':'novalidate'}}) }}
     <div class="table-responsive">
         <table class="table text-start align-middle table-bordered table-hover mb-0">
-            <tr>
-                <td1>{{ form_row(form.quantite) }} </td1>
-                <td2></td2>
-                <td3></td3>
-                <td4></td4>
-        {{ form_row(form.quantite) }}
-        {{ form_row(form.nom) }}
-        {{ form_row(form.adresse) }}
-        {{ form_row(form.telephone) }}
-        <button type="submit" class="btn btn-primary">Valider</button>
+                <tr>
+            <td class="text-center">{{ form_label(form.quantite,"Quantity") }} </td>
+            <td class="text-center"> {{ form_widget(form.quantite) }} </td>
+            
+        </tr>
+
+        <tr>
+            <td class="text-center">{{ form_label(form.nom,"Name") }} </td>
+            <td class="text-center"> {{ form_widget(form.nom) }} </td>
+            
+        </tr>
+
+        <tr>
+            <td class="text-center">{{ form_label(form.adresse," Address") }} </td>
+            <td class="text-center"> {{ form_widget(form.adresse) }} </td>
+          
+        </tr>
+        <tr>
+            <td class="text-center">{{ form_label(form.telephone,"Phone number") }} </td>
+            <td class="text-center"> {{ form_widget(form.telephone) }} </td>
+           
+        </tr>
       
-    {{ form_end(form) }}  #}
+      
+      </table>
+        <button type="submit" class="btn btn-primary">Valider</button>
+    {{ form_end(form) }}  
+
+    {%endblock%}   #}
 
 
-    {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
+   {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
     <table class="table text-dark bg-light table-hover  ">
         <tr>
             <td class="text-center">{{ form_label(form.quantite,"Quantity") }} </td>
@@ -48,9 +65,10 @@
         </tr>
         
     </table>
-    <div style="padding-left: 45%">
-    <button type="submit" class="btn btn-outline-secondary">Validate Command</button>
+    
+    <button type="submit" class="btn btn-primary">Valider</button>
 
-    </div>
-    <br>
-{% endblock %}
+    {{ form_end(form) }}  
+   
+    
+{% endblock %}   

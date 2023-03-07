@@ -59,7 +59,7 @@
                     <h5 class="card-title">Description: {{i.description }}</h5>
                     <h5 class="card-title">Reference: {{i.reference  }} </h5>
                     <a class="btn btn-sm btn-primary" href="{{ path('produit_favori', { 'id': i.id  }) }}"><i class="fa fa-heart me-2"></i></a>
-                    <a class="btn btn-sm btn-primary" href="{{ path('commande_nouvelle', { 'id': i.id  }) }}"><i class="fa fa-shopping-cart me-2"></i></a>
+                    <a class="btn btn-sm btn-primary" href="{{ path('produit_panier', { 'id': i.id  }) }}"><i class="fa fa-shopping-cart me-2"></i></a>
                        
                       
                 </div>

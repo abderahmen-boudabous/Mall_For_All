@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -12,15 +13,18 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("commandes")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commandes")]
     #[Assert\NotBlank (message:"Name is required")]
     #[Assert\Length (min:5,minMessage:"Name too short")]
     #[Assert\Length (max:16,maxMessage:"Name too long")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commandes")]
     #[Assert\NotBlank (message:"Adress is required")]
     #[Assert\Length (min:5,minMessage:"Adress too short")]
     #[Assert\Length (max:16,maxMessage:"Adress too long")]
@@ -28,16 +32,19 @@ class Commande
     private ?string $adresse = null;
 
     #[ORM\Column]
+    #[Groups("commandes")]
     #[Assert\NotBlank (message:"Quantity is required")]
     #[Assert\Positive (message:"Quantity must be positive")]
     #[Assert\Length (max:2,maxMessage:"Too much quantity")]
     private ?int $quantite = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[Groups("commandes")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Produit $produit = null;
 
     #[ORM\Column]
+    #[Groups("commandes")]
     #[Assert\NotBlank (message:"Phone number is required")]
     #[Assert\Positive (message:"Phone must should be positive")]
     #[Assert\Length (min:8,minMessage:"Unavailable phone number ")]

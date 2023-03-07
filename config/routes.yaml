@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+recherche_commande:
+    path: /recherche-commande
+    controller: App\Controller\CommandeController::rechercheCommande
+    methods: [GET, POST]

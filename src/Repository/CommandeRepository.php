@@ -39,6 +39,15 @@ class CommandeRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function findByNom(string $nom)
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.nom = :nom')
+        ->setParameter('nom', $nom)
+        ->getQuery()
+        ->getResult();
+}
 //    /**
 //     * @return Commande[] Returns an array of Commande objects
 //     */

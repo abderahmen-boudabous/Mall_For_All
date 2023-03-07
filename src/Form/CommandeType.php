@@ -18,7 +18,7 @@ class CommandeType extends AbstractType
             ->add('adresse')
             ->add('quantite')
             ->add('telephone')
-            ->add('save',SubmitType::class)
+            
             
         ;
     }

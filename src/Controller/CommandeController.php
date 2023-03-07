@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Repository\ProduitRepository;
 use App\Repository\CommandeRepository;
 use App\Entity\Commande;
@@ -11,6 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+
 
 class CommandeController extends AbstractController
 {
@@ -28,6 +36,10 @@ class CommandeController extends AbstractController
             'commandes' => $commandeRepository->findAll(),
         ]);
     }
+
+
+
+
     #[Route('/nouvelleCommande/{id}', name: 'commande_nouvelle')]
     public function nouvelleCommande(Request $request, $id, ProduitRepository $rp ): Response
     {
@@ -77,5 +89,48 @@ class CommandeController extends AbstractController
      $em->flush();
     return $this->redirectToRoute('affichecommande',);
     }
+    #[Route('/recherche-commande', name: 'recherche-commande')]
+    public function rechercheCommande(Request $request, CommandeRepository $commandeRepository)
+{
+    $nom = $request->get('nom');
+
+    $commandes = $commandeRepository->findByNom($nom);
+    
+    
+
+    return $this->render('commande/recherche.html.twig', [
+        'commandes' => $commandes,
+    ]);
+}
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+   // +++++++++++++++++++++++++++++++++++++++++++++++ PARTIE JSON ++++++++++++++++++++++++++++++++++++++++++++++++++++//
+    #[Route('/showcommande', name: 'showcommande')]
+    public function showcommande(CommandeRepository $commandeRepo , SerializerInterface $serializer)
+    {   
+        $commandes = $commandeRepo -> FindAll();
+        
+        $json = $serializer->serialize($commandes, 'json', ['groups' => "commandes"]);
+        return new Response($json);   
+    }
+    
+
+
+
+
+    
 }
 

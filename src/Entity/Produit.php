@@ -33,10 +33,15 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Commande::class)]
     private Collection $commandes;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Panier::class)]
+    private Collection $paniers;
+
+
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->paniers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,5 +159,36 @@ class Produit
     public function _toString(){
         return $this->getReference();
     }
-    
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): self
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): self
+    {
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getProduit() === $this) {
+                $panier->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }

@@ -2,6 +2,11 @@
 
 
 {% block body %}
+<form method="GET" action="{{ path('recherche_commande') }}">
+    <label for="nom">Rechercher une commande par nom :</label>
+    <input type="text" name="nom" id="nom">
+    <button type="submit">Rechercher</button>
+</form>
 <h1 class="text-secondary text-center container-fluid pt-4 px-4">Commands List</h1>
 
 
